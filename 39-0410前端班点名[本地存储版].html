@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>0410前端班点名[本地存储版]</title>
+  <style>
+    /* 大盒子样式 */
+    #content {
+      text-align: center;
+      width: 1000px;
+      border: 1px solid black;
+      margin: 0 auto;
+      background-color: rgb(185, 182, 179);
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    /* 
+    #content::after {
+      content: '';
+      display: block;
+      clear: both;
+    } */
+
+
+    /* 主标题样式 */
+    #content>h3 {
+      width: 1000px;
+      font-size: 30px;
+
+
+    }
+
+
+    /* 左侧盒子样式 */
+    #leftbox {
+      width: 350px;
+      height: 600px;
+      background-color: #fafafa;
+      justify-content: space-evenly;
+    }
+
+    #leftbox .tip1 {
+      display: inline-block;
+      width: 110px;
+      margin: 1px;
+      height: 30px;
+      line-height: 30px;
+      font-size: 16px;
+      box-sizing: content-box;
+      border: 1px solid black;
+    }
+
+
+    /* 右侧盒子样式 */
+    #rightbox {
+      width: 350px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      background-color: #978989;
+
+    }
+
+    #rightbox .tip1 {
+      display: inline-block;
+      width: 110px;
+      margin: 1px;
+      height: 30px;
+      line-height: 30px;
+      font-size: 16px;
+      box-sizing: content-box;
+      border: 1px solid black;
+    }
+
+
+    /* 中间盒子样式 */
+    #centre {
+      text-align: center;
+      width: 300px;
+      display: flex;
+      background-color: rgb(83, 206, 46);
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    #leftbox .tip1 {
+      display: inline-block;
+      width: 110px;
+      margin: 1px;
+      height: 30px;
+      font-size: 16px;
+      box-sizing: content-box;
+      border: 1px solid black;
+    }
+
+    /* 选中区样式 */
+    #Choose {
+      width: 300px;
+      height: 300px;
+      background-color: rgb(223, 231, 229);
+    }
+
+    /* 选项区样式 */
+    #choice {
+      margin-top: 10px;
+      height: 80px;
+      font-size: 20px;
+    }
+
+    #centre h3 {
+      width: 300px;
+      font-size: 30px;
+      margin: 20;
+      vertical-align: middle;
+    }
+
+
+    /* 按钮区样式 */
+    #choice input {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+
+
+    #start input:nth-of-type(1) {
+      background-color: yellowgreen;
+    }
+
+
+
+    #leftbox .on {
+      background-color: rgb(231, 13, 13);
+    }
+
+    #start input {
+      margin: 0px 10px;
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="content">
+
+    <h3>0410前端班点名</h3>
+
+    <div id="leftbox">
+
+
+    </div>
+
+
+    <div id="centre">
+      <h3>中奖同学</h3>
+
+      <div id="Choose">
+
+      </div>
+
+      <div id="choice">
+
+        <button style="background-color: red;">1 人</button>
+        <button>2 人</button>
+        <button>3 人</button>
+        <button>4 人</button>
+        <button>其他</button>
+        <input type="text" placeholder="请输入您要点名的人数" id="chtxt" disabled value="1">
+
+
+      </div>
+
+      <div id="start">
+        <input type="button" id="begin" value="开始">
+        <input type="button" id="resetting" value="重置">
+      </div>
+
+
+
+    </div>
+
+
+
+    <div id="rightbox">
+
+    </div>
+
+  </div>
+
+
+
+
+  <script>
+
+
+    //总名单
+    var nameList = ['陈哲', '黄杰辉', '康诗妮', '林振西', '陶恩通', '汤小松', '杨美钰倩', '刘跃', '吴航飞', '邓振皓', '蒋楚潇', '饶沐熙', '任强强', '徐凯', '周善铧', '张应', '杨诗琦', '邹剑东', '陈江龙', '梁丽', '罗新姣', '彭丽丽', '颜喜', '韩运风', '刘聪', '肖和进', '邹林峰', '刘星驰', '宁建凯', '曾彪', '付志平', '黄天运', '姜炳安', '谭富衫', '谢雪琴', '李会平', '彭豪业', '汪中梁', '赵奔', '陈淑敏', '戴数林', '吴龙德', '杨兴友', ]
+
+
+    //左侧数组
+    var list = []
+
+    //右侧数组
+    var rList = []
+
+    //被选中数组
+    var num = []
+
+
+
+    //开始按钮
+    var begin = document.getElementById('begin')
+
+    //停止按钮
+    var res = document.getElementById('resetting')
+
+    //选择按钮
+    var choice = document.getElementById('choice')
+    //所有子节点
+    var choiceS = choice.children
+
+
+
+
+
+    // 左侧挑选盒子
+    var LBox = document.getElementById('leftbox')
+
+    // 中间选中盒子
+    var CBox = document.getElementById('Choose')
+
+    //中间盒子标题
+    var cBoxH3 = document.querySelector('#centre h3')
+
+    // 右侧选择盒子
+    var RBox = document.getElementById('rightbox')
+
+    //渲染模板到左侧盒子
+
+
+    //渲染左右名单
+    stor()
+
+
+    //开始函数
+    function stor() {
+      //获取本地存储
+      var ll = localStorage.getItem('ll')
+      if (ll) {
+        console.log('有本地存储')
+
+        //JSON转换为数组
+        list = JSON.parse(ll)
+        //渲染给左侧
+        newStart(list, LBox)
+
+        // 获取右侧本地存储
+        var rr = localStorage.getItem('rr')
+        //JSON转换为数组
+        rList = JSON.parse(rr)
+        //渲染给右侧
+        newStart(rList, RBox)
+
+      } else {//没有存储 重新渲染
+        console.log('没有本地存储')
+        list = nameList.slice()
+        newStart(list, LBox)
+      }
+    }
+
+
+
+
+
+
+    //渲染模块
+    function newStart(arr, box) {
+      //清空原盒子
+      box.innerHTML = ''
+      for (var i = 0; i < arr.length; i++) {
+        //新建div
+        var tipNode = document.createElement('div')
+        //给div添加类
+        tipNode.classList.add('tip1')
+        // 给div填入当前数组内容
+        tipNode.innerHTML = arr[i]
+        //剪切到盒子
+        box.appendChild(tipNode)
+      }
+    }
+
+
+    //随机N个数模块
+    function rollNum(n, lis) {
+      var num = []
+      for (var i = 0; i < n; i++) {
+        num[i] = Math.floor(Math.random() * lis.length)
+        for (var j = 0; j < i; j++) {
+          if (num[i] === num[j]) {
+            i--;
+          }
+        }
+      }
+      return num
+    }
+
+
+
+    // 单选模块
+    function buToCk(choiceS) {
+      //每个单选框索引
+      var index = 0
+
+      // 每个单选框注册事件
+      for (var x = 0; x < choiceS.length - 1; x++) {
+        //每个单选框存自己索引
+        index++
+        choiceS[x].index = index
+        // 注册事件
+        choiceS[x].onclick = function () {
+          for (var j = 0; j < 6; j++) {
+            // 先清空背景色
+            choiceS[j].style.backgroundColor = ''
+          }
+          // 判断是前4个禁用输入框
+          if (this.index < 5) {
+            this.style.backgroundColor = 'red'
+            choiceS[5].value = this.index
+            choiceS[5].disabled = 'turd'
+          } else {
+            //否则开启输入框
+            this.style.backgroundColor = 'red'
+            choiceS[5].disabled = ''
+            choiceS[5].value = ''
+          }
+        }
+      }
+    }
+
+
+    //启动输入框
+    buToCk(choiceS)
+
+
+
+
+
+    //随机选人
+    var timeID = null
+    // var lis = LBox.querySelectorAll('#LBox .tip1')
+
+    //开始按钮被单击
+    begin.onclick = function () {
+      //每次点击清除定时器
+      if (timeID) {
+        clearInterval(timeID)
+      }
+
+      // 输入人数
+      var txt = +chtxt.value
+
+      //判断输入值
+      if (!txt) {
+        //判断空
+        alert('请选择一个按钮,或输入小于10的数字')
+        chtxt.value = ''
+      } else if (txt > 10) {
+        //判断最大值
+        alert('最大值为10')
+        chtxt.value = ''
+      } else if (txt > list.length) {
+        alert('超出剩余人数,目前剩余' + list.length + '人')
+        if (list.length <= 10) {
+          chtxt.value = list.length
+        }
+      } else {
+
+        //改变按钮样式
+        switch (begin.value) {
+          case '开始':
+            // 开始后改变按钮样式
+            // 开始按钮样式
+            begin.value = '停止'
+            begin.style.backgroundColor = 'red'
+
+            //注册定时器
+            timeID = setInterval(function () {
+
+
+              //获取当前子盒子数量 生成最大随机数
+              num = rollNum(txt, list)
+              
+
+              //调用函数给随机到盒子添加样式
+              var noClssBox = newRival(num)
+
+              //克隆到中间展示区
+              noBox(noClssBox)
+
+            }, 100)
+
+
+            break;
+          case '停止':
+            //改变按钮样式
+            //开始按钮样式
+            begin.value = '确定'
+            begin.style.backgroundColor = 'yellowgreen'
+
+
+
+            //重置按钮样式
+            res.value = '重选'
+            res.style.backgroundColor = 'red'
+
+
+            //标题样式
+            cBoxH3.innerHTML = '确定是这些同学吗?'
+            break;
+          case '确定':
+            //开始后改变按钮样式
+
+            //开始按钮样式
+            begin.value = '开始'
+            begin.style.backgroundColor = ''
+
+
+            cBoxH3.innerHTML = '中奖同学'
+
+            //清空中间盒子内容
+            CBox.innerHTML = ''
+
+            //循环被选中数组
+            for (var i = 0; i < num.length; i++) {
+              //获取选中数在原数组中的位置
+              var pos = list.indexOf(list[num[i]])
+              // 剪切到右侧数组
+              rList.push(list.splice(pos, 1))
+            }
+            //重新渲染盒子
+            newStart(rList, RBox)
+            newStart(list, LBox)
+            num = []
+
+            //转为JSON格式数组 存为本地
+            localStorage.setItem('ll', JSON.stringify(list))
+            localStorage.setItem('rr', JSON.stringify(rList))
+
+
+            res.value = '重置'
+            res.style.backgroundColor = ''
+
+            break;
+        }
+      }
+    }
+
+
+
+
+
+    //重置按钮被单击
+    res.onclick = function () {
+      switch (res.value) {
+        //判断按钮状态
+        case '重选':
+          //更改开始按钮状态
+          begin.value = '开始'
+
+          //清除重置按钮颜色
+          res.style.backgroundColor = ''
+
+          //清空中间盒子内容
+          CBox.innerHTML = ''
+
+          //还原标题
+          cBoxH3.innerHTML = '中奖同学'
+
+          //更改重置按钮状态
+          res.value = '重置'
+
+          //清除每个盒子选中类样式
+          var LboxON = LBox.querySelectorAll('.on')
+          for (var i = 0; i < LboxON.length; i++) {
+            LboxON[i].classList.remove('on')
+          }
+
+          break;
+
+        //判断按钮状态
+        case '重置':
+
+          //如果在开始状态下按了重置
+          if (timeID) {
+            clearInterval(timeID)
+          }
+          //开始按钮样式
+          begin.value = '开始'
+          begin.style.backgroundColor = ''
+
+          // 清空左侧盒子
+          LBox.innerHTML = ''
+          // 重新渲染左侧
+          list = nameList.slice()
+          newStart(list, LBox)
+          // 清空中间盒子
+          CBox.innerHTML = ''
+
+          //还原标题
+          cBoxH3.innerHTML = '中奖同学'
+
+          //删除本地存储
+          localStorage.clear()
+
+
+          // 清空右侧盒子
+          RBox.innerHTML = ''
+          rList = []
+          break;
+      }
+    }
+
+
+
+
+
+
+
+    //随机选项模块
+    function newRival(num) {
+      //获取左侧盒子所有子项
+      var box = LBox.children
+      var noBox = []
+
+      //每次执行先清除上次选中类样式
+      for (var k = 0; k < box.length; k++) {
+        box[k].classList.remove('on')
+      }
+
+      // 给新选中添加类样式
+      for (var i = 0; i < num.length; i++) {
+        box[num[i]].classList.add('on')
+        noBox[i] = box[num[i]]
+      }
+
+      // 返回被添加样式的元素
+      return noBox
+    }
+
+
+    //中间选中展示
+    function noBox(noClssBox) {
+      //先清空内容
+      CBox.innerHTML = ''
+      // console.log(noClssBox)
+
+      // 将每项克隆展示
+      for (var i = 0; i < noClssBox.length; i++) {
+        CBox.appendChild(noClssBox[i].cloneNode(true))
+      }
+    }
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>旋转木马轮播图</title>
+  <link rel="stylesheet" href="./css/demo(29).css" />
+</head>
+
+<body>
+
+  <div class="wrap" id="wrap">
+    <div class="slide" id="slide">
+      <ul>
+        <li class="one"><a href="#"><img src="images/xuanzhuanmm2.jpg" alt="" /></a></li>
+        <li class="two"><a href="#"><img src="images/xuanzhuanmm3.jpg" alt="" /></a></li>
+        <li class="three"><a href="#"><img src="images/xuanzhuanmm1.png" alt="" /></a></li>
+        <li class="four"><a href="#"><img src="images/xuanzhuanmm4.jpg" alt="" /></a></li>
+        <li class="five"><a href="#"><img src="images/xuanzhuanmm5.jpg" alt="" /></a></li>
+      </ul>
+      <div class="arrow" id="arrow">
+        <a href="javascript:;" class="prev" id="arrLeft"></a>
+        <a href="javascript:;" class="next" id="arrRight"></a>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/animate(29).js"></script>
+  <script>
+    //  旋转木马的思路
+    // 1. 让每个li标签根据配置单里面对应的数组元素生成各自的样式
+    // 2. 单击按钮的时候，改变配置里面的元素位置
+    // 3. 让每个li标签根据新的配置单重新生成各自的位置
+    // 4. 加节流阀
+
+    var config = [
+      {
+        "width": 400,
+        "top": 20,
+        "left": 50,
+        "opacity": 0.2,
+        "zIndex": 2
+      },//0
+      {
+        "width": 600,
+        "top": 70,
+        "left": 0,
+        "opacity": 0.8,
+        "zIndex": 3
+      },//1
+      {
+        "width": 800,
+        "top": 120,
+        "left": 200,
+        "opacity": 1,
+        "zIndex": 4
+      },//2
+      {
+        "width": 600,
+        "top": 70,
+        "left": 600,
+        "opacity": 0.8,
+        "zIndex": 3
+      },//3
+      {
+        "width": 400,
+        "top": 20,
+        "left": 750,
+        "opacity": 0.2,
+        "zIndex": 2
+      }//4
+    ];
+
+    // 1. 获取页面中的标签对象
+
+    //图片大盒子
+    var slide = document.getElementById('slide')
+
+    var ul = document.querySelector('#slide ul')
+
+    var lis = ul.children
+
+    var wrap = document.getElementById('wrap')
+
+    //箭头大盒子
+    var arrow = document.getElementById('arrow')
+
+    // 左箭头
+    var arrL = document.getElementById('arrLeft')
+    var arrR = document.getElementById('arrRight')
+
+    //1. 添加全局变量 flag为true
+    var flag = true
+
+    newImg()
+
+    function newImg() {
+      //5. 先执行完前两个，最后才执行函数 更改flag为true
+      for (var i = 0; i < config.length; i++) {
+        animate(lis[i], config[i], function () {
+          flag = true
+        })
+      }
+    }
+
+    wrap.onmouseover = function () {
+      animate(arrow, {
+        opacity: 1
+      })
+    }
+    wrap.onmouseout = function () {
+      animate(arrow, {
+        opacity: 0
+      })
+    }
+
+    arrR.onclick = function () {
+      if (flag) {
+        flag = false
+        //删除数组第一项 然后添加到最后
+        config.push(config.shift())
+        //重新渲染数组
+        newImg()
+      }
+    }
+    arrL.onclick = function () {
+      // 6. 如果函数没有执行完flag为false 不能进入判断执行函数
+      // 2. 点击是判断 flag为true才能进去执行函数
+      if (flag) {
+        // 3. 更改flag为false 
+        flag = false
+        //删除数组最后一项 然后添加到最前
+        config.unshift(config.pop())
+        //重新渲染数组
+        //4. 执行函数
+        newImg()
+        
+      }
+    }
+
+
+  </script>
+</body>
+
+</html>

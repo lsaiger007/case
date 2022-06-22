@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>JavaScript</title>
+  <meta charset="utf-8">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键词描述">
+</head>
+
+<body>
+
+
+  <script>
+
+    //冒泡排序,从小到大 
+    var nums = [65, 97, 76, 13, 27, 49, 58]
+    //总共七位数 所以需要6次 i < nums.length - 1
+    //内部两两对比 a和a+1对比
+    //如果判断成立 互换 执行到最后 最后一个数最大
+    //此时循环数-1
+
+    for (var i = 0; i < nums.length - 1; i++) {
+      for (var a = 0; a < nums.length - 1 - i; a++) {
+        if (nums[a] > nums[a + 1]) {
+          var b = 0
+          b = nums[a]
+          nums[a] = nums[a + 1]
+          nums[a + 1] = b
+
+        }
+      }
+    }
+    console.log(nums)
+
+
+
+  </script>
+
+
+</body>
+
+</html>

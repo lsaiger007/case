@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    body,
+    ul,
+    ol,
+    li,
+    img {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #box {
+      width: 500px;
+      height: 200px;
+      padding: 7px;
+      /*background-color: red;*/
+      border: 1px solid #ccc;
+      margin: 100px auto;
+      position: relative;
+    }
+
+    .ad {
+      width: 500px;
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #box img {
+      width: 500px;
+    }
+
+    .ad ul li {
+      width: 500px;
+      height: 200px;
+      overflow: hidden;
+      float: left;
+    }
+
+    .ad ul {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3000px;
+    }
+
+    .ad ul li.current {
+      background: yellow;
+    }
+
+    .ad ol {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      line-height: 20px;
+      text-align: center;
+    }
+
+    .ad ol li {
+      float: left;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .ad ol li.current {
+      background: yellow;
+    }
+
+    #arr {
+      display: block;
+    }
+
+    #arr span {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      position: absolute;
+      /*left: 5px;*/
+      top: 50%;
+      margin-top: -20px;
+      background-color: #000;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      font-family: '黑体';
+      font-size: 30px;
+      color: #fff;
+      opacity: 0.3;
+      border: 1px solid #fff;
+    }
+
+    #arr #left {
+      left: 5px;
+
+    }
+
+    #arr #right {
+      right: 5px;
+      /*left: auto;*/
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="box" class="all">
+    <div class="ad">
+      <ul id="imgs">
+        <li><img src="images/lunbotu1.jpg" width='500' height='200' alt="" /></li>
+        <li><img src="images/lunbotu2.jpg" width='500' height='200' alt="" /></li>
+        <li><img src="images/lunbotu3.jpg" width='500' height='200' alt="" /></li>
+        <li><img src="images/lunbotu4.jpg" width='500' height='200' alt="" /></li>
+        <li><img src="images/lunbotu5.jpg" width='500' height='200' alt="" /></li>
+      </ul>
+      <ol></ol>
+    </div>
+    <div id="arr">
+      <span id="left">&lt;</span>
+      <span id="right">&gt;</span>
+    </div>
+  </div>
+
+
+
+  <script>
+    // 轮播图的大体思路
+    /**
+     * 1. 根据图片的个数(也就是li标签的个数)动态的生成小方块
+     * 2. 鼠标移入小方块，当前小方块的背景颜色变成黄色，其它的变成无色
+     * 3. 鼠标移入小方块，要显示对应小方块编号的图片，也就是让ul移动到当前小方块索引个图片宽度的距离
+     * 4. 鼠标移入大盒子显示左右按钮，鼠标离开大盒子，隐藏左右按钮
+     * 5. 给右侧按钮注册事件，单击一次移动一张图片(也就是让ul移动一张图片的宽度的距离)
+     * 6. 单击右侧按钮的同时，让小方块的颜色和按钮的单击同步起来
+     * 7. 左侧按钮的做法同上
+     * 8. 让图片的索引 小方块的索引和鼠标移入小方块的索引同步起来
+     * 9. 开启自动轮播(每间隔1秒移动一张图片，其实就相当于每间隔1秒钟单击一次右按钮)
+     */
+
+    //大盒子
+    var box = document.getElementById('box')
+
+    //图片展示小盒子
+    var ad = document.querySelector('#box .ad')
+
+    //图片展示长盒子
+    var ul = document.getElementById('imgs')
+    //所有图片盒子
+    var lis = ul.children
+
+    //小块展示盒子
+    var ol = document.querySelector('#box .ad ol')
+
+
+    // 箭头
+    var arr = document.getElementById('arr')
+    var arrL = document.getElementById('left')
+    var arrR = document.getElementById('right')
+
+    //图片宽度
+    var imgWidth = ad.offsetWidth
+
+    //5.1 图片位置
+    var plc = 0
+    //5.1 小方块索引
+    var square = 0
+
+    var timeIDD = null
+
+
+
+    //1.0 动态生成li
+
+    //1.2 根据图片数量创建小块
+    for (var i = 0; i < lis.length; i++) {
+      //1.2 创建小块
+      var lip = document.createElement('li')
+      //1.2 创建小块文字
+      lip.innerHTML = i + 1
+      //1.2 剪切到父盒子
+      ol.appendChild(lip)
+    }
+
+
+    //1.3 打开盒子默认选中第一个
+    //1.4 获取所有的小方块 并设置第1个的背景颜色
+    var olLis = ol.children
+    olLis[0].classList.add('current')
+
+
+
+    //3.0 鼠标移入变色
+    for (var i = 0; i < olLis.length; i++) {
+      //4.0 移入图片同步 每个图片存自己index
+      olLis[i].setAttribute('index', i)
+
+      //3.1 注册移入事件
+      olLis[i].onmouseover = function () {
+        for (var k = 0; k < olLis.length; k++) {
+          olLis[k].classList.remove('current')
+        }
+        this.classList.add('current')
+
+        // 4.1 获取当前按钮index值
+        var index = this.getAttribute('index')
+
+        plc = square = index
+        // 4.2 获得目标图片值
+        var target = -imgWidth * index
+
+        //4.3 调用步长函数计算
+        animate(ul, target)
+      }
+    }
+
+
+    // 2.0设置箭头移入状态
+    box.onmouseover = function () {
+      arr.style.display = 'block'
+      clearInterval(timeIDD)
+    }
+    box.onmouseout = function () {
+      arr.style.display = 'none'
+      
+      timeIDD = setInterval(function () {
+        console.log(123)
+        newNext()
+      }, 3000)
+    }
+
+    // 5.0 箭头注册事件
+
+    //5.2 克隆图片
+    var imgNode = lis[0].cloneNode(true)
+    ul.appendChild(imgNode)
+
+    // 5.3 还可以这么写 不能加()否则调用有返回值
+    // arrR.onclick = newNex
+
+    //5.3 右箭头点击事件
+    arrR.onclick = function () {
+      //判断如果图片索引到克隆的第五张 也就是按钮点了5下
+      if (plc === lis.length - 1) {
+        // 因为克隆了第1个子标签加到最后了，此时lis.length=6
+
+        // 立即让图片索引为0
+        plc = 0
+        // 让plc恢复原值0 ul回到0
+        ul.style.left = '0px'
+      }
+      plc++
+      var target = -imgWidth * plc
+      animate(ul, target)
+
+      //5.4 让图片和黄色按钮同步
+      //判断如果到最后一个按钮
+      if (square === olLis.length - 1) {
+        // 就让小方块索引为0
+        square = 0
+      } else {
+        square++
+      }
+      //依然会执行排外
+      for (var i = 0; i < olLis.length; i++) {
+        olLis[i].classList.remove('current')
+      }
+      olLis[square].classList.add('current')
+
+    }
+
+
+    //5.5 左侧按钮
+    arrL.onclick = function () {
+      //判断如果到第一张
+      if (plc === 0) {
+        // 因为克隆了第1个子标签加到最后了，此时lis.length=6
+        plc = lis.length - 1
+        // 让plc恢复原值0 ul回到0
+        ul.style.left = -imgWidth * (lis.length - 1) + 'px'
+      }
+      plc--
+      var target = -imgWidth * plc
+      animate(ul, target)
+
+      //5.6 让图片和黄色按钮同步
+      //判断如果到第一个按钮
+      if (square === 0) {
+        square = olLis.length - 1
+      } else {
+        square--
+      }
+      for (var i = 0; i < olLis.length; i++) {
+        olLis[i].classList.remove('current')
+      }
+      olLis[square].classList.add('current')
+
+    }
+
+    //6.2 开启定时器
+    timeIDD = setInterval(function () {
+      newNext()
+    }, 3000)
+
+    //开启定时器也可以这么写
+    // timeIDD = setInterval(newNext,3000)
+
+    // 6.0 自动轮播
+
+    // 6.1 封装点击函数
+
+    function newNext() {
+
+      //判断如果图片索引到克隆的第五张 也就是按钮点了5下
+      if (plc === lis.length - 1) {
+        // 因为克隆了第1个子标签加到最后了，此时lis.length=6
+
+        // 立即让图片索引为0
+        plc = 0
+        // 让plc恢复原值0 ul回到0
+        ul.style.left = '0px'
+      }
+      plc++
+      var target = -imgWidth * plc
+      animate(ul, target)
+
+      //5.4 让图片和黄色按钮同步
+      //判断如果到最后一个按钮
+      if (square === olLis.length - 1) {
+        // 就让小方块索引为0
+        square = 0
+      } else {
+        square++
+      }
+      //依然会执行排外
+      for (var i = 0; i < olLis.length; i++) {
+        olLis[i].classList.remove('current')
+      }
+      olLis[square].classList.add('current')
+    }
+
+
+
+
+
+
+
+    //计算步长函数
+    function animate(demo, target) {
+      if (demo.timeId) {
+        // 将定时器归当前对象管理
+        clearInterval(demo.timeId)
+        //  如果对象有定时的话，一定要先清除定时器
+      }
+      demo.timeId = setInterval(function () {
+        //获取当前位置
+        var leader = demo.offsetLeft
+        // 如果目标值大于现在位置 则要加步长 所以为正数
+        // 如果目标值比现在位置小 则要减去步长 所以为负数
+        var step = 20
+        step = target > leader ? step : -step;
+        //取绝对值 如果目标位置减去现在位置 大于步长 进入执行
+        if (Math.abs(target - leader) > Math.abs(step)) {
+          // 移动步长距离
+          leader += step
+          //移动盒子
+          demo.style.left = leader + 'px'
+        } else {
+          // 如果最后相差的距离不足一个步长的时候，为了能够真正的到达目标位置，可以直接跳到目标位置
+          demo.style.left = target + 'px'
+          //清除定时器
+          clearInterval(demo.timeId)
+        }
+      }, 15);
+      //间隔15毫秒执行一次
+    };
+
+
+
+
+
+
+
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

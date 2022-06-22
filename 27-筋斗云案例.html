@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>静态文件02</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    body {
+      background-color: #333;
+    }
+
+    .nav {
+      width: 800px;
+      height: 42px;
+      margin: 100px auto;
+      /*background-color: red;*/
+      background: #fff url(images/rss.png) no-repeat right center;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .nav li {
+      width: 83px;
+      height: 42px;
+      /*background-color: red;*/
+      text-align: center;
+      line-height: 42px;
+      float: left;
+      cursor: pointer;
+    }
+
+    ul {
+      position: relative;
+    }
+
+    .nav span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 83px;
+      height: 42px;
+      background: url(images/cloud.gif) no-repeat;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="nav">
+    <span id="cloud"></span>
+    <ul id="navBar">
+      <li>北京校区</li>
+      <li>上海校区</li>
+      <li>广州校区</li>
+      <li>深圳校区</li>
+      <li>武汉校区</li>
+      <li>关于我们</li>
+      <li>联系我们</li>
+      <li>招贤纳士</li>
+    </ul>
+  </div>
+
+  <script>
+    // 思路
+    // 1. span有绝对定位，是相对于nav进行的绝对 定位，因此可以在盒子内部进行移动
+    // 2. 鼠标移入当前li标签的时候，就让筋斗云移动到当前的li标签的位置
+    // 3. 鼠标离开的时候，筋斗云要回到原来鼠标单击的位置，如果没有单击的话，要回到原来默认的位置
+
+    //总选项盒子
+    var ul = document.getElementById('navBar')
+    //子选项盒子
+    var lis = ul.children
+    //大盒子
+    var nav = document.querySelector('.nav')
+    //云朵
+    var cloud = document.getElementById('cloud')
+
+    var lastPosition = 0 // 初始位置
+
+    for (var i = 0; i < lis.length; i++) {
+      //当移动到li
+      lis[i].onmouseover = function () {
+        //获取元素当前位置
+        var target = this.offsetLeft
+
+        //当前对象 键:值 没有函数可以不传
+        //把目标位置给cloud
+        animate(cloud, {
+          left: target
+        })
+      }
+
+      // 2.3 当单击的时候，要将当前被 单击的li标签的位置给到lastPosition
+      lis[i].onclick = function () {
+        lastPosition = this.offsetLeft
+      }
+      // 2.4 鼠标离开时，要恢复到原来的位置 
+      lis[i].onmouseout = function () {
+        animate(cloud, {
+          left: lastPosition
+        })
+      }
+    }
+
+
+
+
+
+
+
+    function animate(demo, obj, fn) {
+      if (demo.timeId) {
+        clearInterval(demo.timeId)
+      }
+      demo.timeId = setInterval(function () {
+        //全局变量为flag
+        var flag = true
+        // 循环遍历对象，获取对象属性名及目标值
+        for (var key in obj) {
+          // 去掉字母取整 获取当前元素的属性值
+          var leader = parseInt(getStyle(demo, key))
+
+          //缓动步长 目标值减当前值 差值除以10
+          var step = (obj[key] - leader) / 10
+
+          // 判断步长正负 正数向上取整 负数向下
+          step = step > 0 ? Math.ceil(step) : Math.floor(step)
+          console.log(step)
+
+          // 当前移动值 = 目前所在值+步长
+          var current = leader + step
+
+          //移动位置
+          demo.style[key] = current + 'px'
+
+          //如果当前属性值没到 就把flag改为false不会清除定时器
+          if (obj[key] !== current) {
+            flag = false
+          }
+        }
+
+        //如果上面代码都没有改变flag值，此时他为全局变量true
+        // 进入停掉定时器
+        if (flag) {
+          clearInterval(demo.timeId)
+
+          // 清除定时器之后，如果有回调函数，则执行回调函数中的代码
+          if (typeof fn === 'function') {
+            fn()
+          }
+        }
+      }, 15);
+    }
+
+
+    // attr是attribute 属性的意思
+    function getStyle(ele, attr) {
+      // 能力检测 就是要看当前的浏览器是否支持此标签对象的属性或是方法
+      if (ele && ele.currentStyle) {
+        return ele.currentStyle[attr]
+      } else {
+        return window.getComputedStyle(ele, null)[attr]
+      }
+    }
+
+
+
+
+  </script>
+
+
+
+
+
+</body>
+
+</html>

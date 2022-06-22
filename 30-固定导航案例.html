@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    img {
+      vertical-align: top;
+    }
+
+    .top {
+      margin: 0 auto;
+      width: 1423px;
+    }
+
+    .nav {
+      width: 1423px;
+      margin: 0 auto;
+      /*text-align: center;*/
+    }
+
+    img {
+      width: 100%;
+    }
+
+    .main {
+      margin: 0 auto;
+      width: 1000px;
+      margin-top: 10px;
+    }
+
+    .fixed {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      margin-left: -712px;
+      z-index: 20;
+    }
+  </style>
+  <script>
+
+  </script>
+</head>
+
+<body>
+  <div class="top" id="topPart">
+    <img src="images/gddaohang (3).png" alt="" />
+  </div>
+  <div class="nav" id="navBar">
+    <img src="images/gddaohang (2).png" alt="" />
+  </div>
+  <div class="main" id="mainPart">
+    <img src="images/gddaohang (1).png" alt="" />
+  </div>
+
+  <script>
+
+    var topPart = document.getElementById('topPart')
+    console.log(topPart)
+
+    var nav = document.getElementById('navBar')
+
+    var main = document.getElementById('mainPart')
+
+    //1. dom2注册事件 注册scroll事件 监听页面滚动 只要页面滚动就会被触发
+    window.addEventListener('scroll', function () {
+      // 2. 获取页面被滚动出去的高度
+      var scroll = document.documentElement.scrollTop
+
+      // 3. 如果被滚动出去高度大于顶栏高度
+      if (scroll > topPart.offsetHeight) {
+        // 4. 添加类 
+        // navBar.className = 'nav fixed'
+        navBar.classList.add('fixed')
+        // 5. 因为定位脱离文档流 所以要给下面盒子补上paddingTop
+        main.style.paddingTop = nav.offsetHeight + 'px'
+      } else {
+        // 6. 如果被滚出去高度小于顶部高度 删除类
+        navBar.classList.remove('fixed')
+        // navBar.className = 'nav'
+        // 7. 移除paddingTop
+        main.style.paddingTop = '0px'
+      }
+    })
+
+
+
+
+
+    // // 2. 注册scroll事件 监听页面滚动
+    // window.addEventListener('scroll', function () {
+
+    //   // var obj = scroll()
+    //   // var scrollTop = obj.scrollTop
+
+    //   // 2.1 获取页面被卷去的高度
+    //   var scrollTop = scroll().scrollTop
+
+
+    //   // console.log(scrollTop)
+    //   // 2.2 当页面被卷去的高度大于第1个部分的高度时，要让导航 栏固定
+
+    //   console.log(navBar.offsetTop)
+    //   if (scrollTop > topPart.offsetHeight) {
+
+    //     // navBar.classList.add('fixed')
+
+    //     navBar.className = 'nav fixed'
+    //     mainPart.style.paddingTop = navBar.offsetHeight + 'px'
+    //   } else {
+
+    //     // navBar.classList.remove('fixed')
+
+    //     navBar.className = 'nav'
+    //     mainPart.style.paddingTop = '0px'
+    //   }
+    // })
+
+
+
+
+
+
+
+
+
+
+
+    function scroll02() {
+      // var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      // var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0
+
+      // 当函数内返回多个数据的时候，最好是放在对象当中 因为对象是无序属性的集合
+      // return {
+      //   scrollTop:scrollTop,
+      //   scrollLeft:scrollLeft
+      // }
+
+      return {
+        scrollTop: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0,
+        scrollLeft: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0
+      }
+    }
+
+
+
+
+
+
+
+  </script>
+
+
+
+
+
+
+</body>
+
+</html>

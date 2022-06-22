@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>06-许愿墙重写</title>
+  <style>
+    body {
+      margin: 0 auto;
+      padding: 0px;
+      font-size: 12px;
+      background: url(images/bg.gif) repeat center 36px;
+
+      text-align: center;
+      background-color: #c30230;
+    }
+
+    #content {
+      margin: 0 auto;
+      width: 960px;
+      background: url(images/content_bg.jpg) no-repeat left top;
+      height: 627px;
+    }
+
+    #content .tip1,
+    #content .tip2,
+    #content .tip3,
+    #content .tip4,
+    #content .tip5,
+    #content .tip6,
+    #content .tip7,
+    #content .tip8 {
+      position: absolute;
+      width: 227px;
+      left: 200px;
+      top: 100px;
+    }
+
+    #content .tip1 .tip_h {
+      background: url(images/tip1_h.gif) no-repeat left top;
+    }
+
+    #content .tip1 .tip_h,
+    #content .tip2 .tip_h,
+    #content .tip3 .tip_h,
+    #content .tip4 .tip_h,
+    #content .tip5 .tip_h,
+    #content .tip6 .tip_h,
+    #content .tip7 .tip_h,
+    #content .tip8 .tip_h {
+      width: 227px;
+      padding-top: 45px;
+      height: 23px;
+      text-align: left;
+      /* cursor: move; */
+      cursor: pointer;
+    }
+
+    #content .tip1 .tip_c {
+      background: url(images/tip1_c.gif) repeat-y;
+    }
+
+    #content .tip1 .tip_c,
+    #content .tip2 .tip_c,
+    #content .tip3 .tip_c,
+    #content .tip4 .tip_c,
+    #content .tip5 .tip_c,
+    #content .tip6 .tip_c,
+    #content .tip7 .tip_c,
+    #content .tip8 .tip_c {
+      width: 200px;
+      padding-left: 12px;
+      padding-right: 15px;
+      min-height: 40px;
+      text-align: left;
+      line-height: 20px;
+      max-height: 160px;
+      word-wrap: break-word;
+      word-break: break-all;
+      overflow: hidden;
+    }
+
+    #content .tip1 .tip_f {
+      background: url(images/tip1_f.gif) no-repeat left top;
+    }
+
+    #content .tip1 .tip_f,
+    #content .tip2 .tip_f,
+    #content .tip3 .tip_f,
+    #content .tip4 .tip_f,
+    #content .tip5 .tip_f,
+    #content .tip6 .tip_f,
+    #content .tip7 .tip_f,
+    #content .tip8 .tip_f {
+      width: 227px;
+      height: 53px;
+      padding-top: 20px;
+
+    }
+
+    #content .close,
+    #content .close2 {
+      float: left;
+      font-size: 12px;
+      cursor: pointer;
+      color: #000000;
+    }
+
+    .clr {
+      clear: both;
+      overflow: auto;
+      display: block;
+      height: 0px;
+    }
+
+    #content .icon {
+      float: left;
+      width: 35px;
+      padding-left: 15px;
+      height: 35px;
+      text-align: center;
+    }
+
+    #content .name {
+      float: right;
+      padding-right: 15px;
+      text-align: right;
+      font-size: 14px;
+      line-height: 35px;
+      color: #C0F;
+    }
+
+    #content .num {
+      float: left;
+      padding-left: 7px;
+      width: 195px;
+    }
+
+    .add-bg {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      background: #000000;
+      /*filter: alpha(opacity=20);*/
+      opacity: 0.3;
+      display: none;
+      z-index: 99;
+    }
+
+    .add {
+      width: 512px;
+      position: absolute;
+      border: #ebebeb solid 1px;
+      height: 280px;
+      left: 50%;
+      right: 50%;
+      background: #ffffff;
+      box-shadow: 0px 0px 20px #ddd;
+      z-index: 9999;
+      margin-left: -250px;
+      margin-top: 140px;
+      display: none;
+      z-index: 100;
+    }
+
+    .add-title {
+      width: 100%;
+      margin: 10px 0px 0px 0px;
+      text-align: center;
+      line-height: 40px;
+      height: 40px;
+      font-size: 18px;
+      position: relative;
+      cursor: move;
+      -moz-user-select: none;
+      /*火狐*/
+      -webkit-user-select: none;
+      /*webkit浏览器*/
+      -ms-user-select: none;
+      /*IE10*/
+      -khtml-user-select: none;
+      /*早期浏览器*/
+      user-select: none;
+    }
+
+
+
+    .add-button {
+      width: 50%;
+      margin: 30px auto 0px auto;
+      line-height: 40px;
+      font-size: 20px;
+      border: #ebebeb 1px solid;
+      text-align: center;
+
+    }
+
+    a {
+      text-decoration: none;
+      color: #000000;
+    }
+
+    .add-button a {
+      display: block;
+    }
+
+    a:hover {
+      background-color: blue;
+      color: #fff;
+
+    }
+
+    .add-input input.add-input,
+    .add-input textarea {
+      float: left;
+      height: 35px;
+      width: 350px;
+      border: #ebebeb 1px solid;
+      text-indent: 5px;
+    }
+
+    .add-input input.add-input {
+      line-height: 35px;
+    }
+
+    .add-input textarea {
+      resize: none;
+      height: 65px;
+    }
+
+    .add-input {
+      overflow: hidden;
+      margin: 0px 0px 20px 0px;
+    }
+
+    .add-input label {
+      float: left;
+      width: 90px;
+      padding-right: 10px;
+      text-align: right;
+      line-height: 35px;
+      height: 35px;
+      font-size: 14px;
+    }
+
+    .add-title span {
+      position: absolute;
+      font-size: 12px;
+      right: -20px;
+      top: -30px;
+      background: #ffffff;
+      border: #ebebeb solid 1px;
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <!-- 左上角添加新纸条按钮 -->
+  <input type="button" id="btn" value="添加" style="float:left">
+  <input type="button" value="存储" id="Storage" style="float:left">
+  <input type="button" value="删除" id="deleted" style="float:left">
+
+
+  <!-- 添加新纸条盒子 -->
+  <div id="add" class="add">
+
+    <!-- 盒子顶部标语 -->
+    <div id="title" class="add-title">添加祝愿纸条
+      <span>
+        <a id="closeBtn" href="javascript:void(0);" class="close-add">关闭</a>
+      </span>
+    </div>
+
+    <!-- 昵称栏 -->
+    <div class="add-input-content">
+      <div class="add-input">
+        <label>昵称：</label>
+        <input type="text" placeholder="请输入用户名" name="info[username]" id="username" class="add-input">
+      </div>
+
+      <!-- 内容栏 -->
+      <div class="add-input">
+        <label>纸条内容：</label>
+        <textarea name="" id="txtContent" cols="50" rows="6"></textarea>
+      </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div id="loginBtn" class="add-button">
+      <a href="javascript:void(0);" id="add-button-submit">提交
+      </a>
+    </div>
+
+  </div>
+
+  <!-- 遮罩层 -->
+  <div id="bg" class="add-bg">
+
+  </div>
+
+  <!-- 纸条发布盒子 -->
+  <div id="content">
+    <!-- 
+      <div class="tip1">
+        <div class="tip_h" title="双击关闭纸条">
+          <div class="num">第[49568]条 2019-02-17 22:51:52</div>
+          <div class="close" title="关闭纸条">×</div>
+          <div class="clr"></div>
+        </div>
+  
+        <div class="tip_c">
+          希望马上能怀个健康的宝宝 祈祷祈祷
+        </div>
+  
+        <div class="tip_f">
+  
+          <div class="icon">
+            <img src="images/bpic_1.gif" alt="" title="">
+          </div>
+  
+          <div class="name">成真的人
+          </div>
+  
+          <div class="clr">
+          </div>
+  
+        </div> -->
+  </div>
+
+  <script>
+    // 1. 模拟的从后台服务器获取到的数据内容
+    var messages = [    //数组里面的每一条数据都是一个json对象
+      { "id": 1, "name": "mahu", "content": "今天你拿苹果支付了么", "time": "2022-02-17 00:00:00" },
+      { "id": 2, "name": "haha", "content": "今天天气不错，风和日丽的", "time": "2022-02-18 12:40:00" },
+      { "id": 3, "name": "jjjj", "content": "常要说的事儿是乐生于苦", "time": "2022-03-18 12:40:00" },
+      { "id": 4, "name": "9.8的妹纸", "content": "把朋友家厕所拉堵了 不敢出去 掏了半小时了都", "time": "2022-03-18 12:40:00" },
+      { "id": 5, "name": "雷锋ii.", "content": "元宵节快乐", "time": "2022-02-22 12:40:00" },
+      { "id": 6, "name": "哎呦哥哥.", "content": "据说今晚央视的元宵晚会导演和春晚导演是同一个人，真是躲得过初一，躲不过十五。", "time": "2022-02-22 01:30:00" },
+      { "id": 7, "name": "没猴哥，不春晚", "content": "班主任:“小明，你都十二岁了，还是三年级，不觉得羞愧吗”？。小明:“一点也不觉得，老师你都四十多岁了，不也是年年在三年级混日子吗？羞愧的应该是你”。老师:……", "time": "2022-02-22 01:30:00" },
+      { "id": 8, "name": "哎呦杰杰.", "content": "真搞不懂你们地球人，月亮有什么好看的，全是坑，还是对面那哥们好看，", "time": "2022-02-22 01:30:00" },
+      { "id": 9, "name": "虹虹.", "content": "生活不止眼前的苟且，还有湿和远方。。。", "time": "2022-03-22 02:30:00" }
+    ];
+
+    //2. 获取页面元素
+
+    //左上角添加新纸条按钮
+    var but = document.getElementById('btn')
+    //新纸条盒子
+    var add = document.getElementById('add')
+    //新纸条盒子关闭
+    var closeBtn = document.getElementById('closeBtn')
+    //新纸条盒子标题
+    var titleBox = document.getElementById('title')
+    //输入昵称
+    var addName = document.getElementById('username')
+    //输入内容栏
+    var addCont = document.getElementById('txtContent')
+    //提交
+    var loginBtn = document.getElementById('loginBtn')
+
+    var srt = document.getElementById('Storage')
+    var del = document.getElementById('deleted')
+
+    //遮罩层
+    var bg = document.getElementById('bg')
+    // 纸条发布区
+    var cont = document.getElementById('content')
+
+
+
+    //层级变量
+    var zIndex = 0
+
+    //1. 循环数组中每一项
+    for (var i = 0; i < messages.length; i++) {
+      //1.1 调用函数生成新纸条
+      createBox(messages[i])
+    }
+
+
+
+
+    function createBox(obj) {
+      //2. 生成纸条盒子
+      var tipNode = document.createElement('div')
+      //2.1 给纸条盒子添加类
+      tipNode.classList.add('tip1')
+
+
+      //2.2 给盒子内添加内容
+      tipNode.innerHTML = `<div class="tip_h" title="双击关闭纸条" >
+          <div class="num">第[${obj.id}]条 ${obj.time}</div>
+          <div class="close" title="关闭纸条">×</div>
+          <div class="clr"></div>
+        </div>
+  
+        <div class="tip_c">
+          ${obj.content}
+        </div>
+  
+        <div class="tip_f">
+  
+          <div class="icon">
+            <img src="images/bpic_1.gif" alt="" title="">
+          </div>
+  
+          <div class="name">${obj.name}
+          </div>
+  
+          <div class="clr">
+          </div>`
+
+      //2.3 调用函数生成随机位置
+      tipNode.style.left = roll().x + 'px'
+      tipNode.style.top = roll().y + 'px'
+
+      //3. 注册双击关闭事件 获取被双击元素
+      var tip_h = tipNode.querySelector('.tip_h')
+
+      //6.1 人为的设置一个层级 使新盒子总在最前
+      tipNode.style.zIndex = zIndex
+
+      // 6. 点击盒子在最前
+      tipNode.onclick = function () {
+        zIndex++
+        this.style.zIndex = zIndex
+      }
+
+      //3.1 注册双击事件
+      tip_h.ondblclick = function () {
+        //3.2 被双击时 事件元素的父元素display none
+        this.parentNode.style.display = 'none'
+      }
+
+      //4. 注册X键关闭 获取X元素
+      var close = tipNode.querySelector('.close')
+      //4.1 注册单击事件
+      close.onclick = function () {
+        //4.2 被双击时 事件元素父元素的父元素 display none
+        this.parentNode.parentNode.style.display = 'none'
+      }
+
+
+      //5. 注册拖动事件 鼠标按下时
+      tip_h.onmousedown = function (e) {
+        // 6.1 每次拖拽的时候 使拖拽的在最前
+        zIndex++
+        this.parentNode.style.zIndex = zIndex
+
+        //5.1 先计算盒子内鼠标位置 鼠标在页面位置 - 主盒子距离页面位置
+        var tip_hX = e.pageX - tipNode.offsetLeft
+        var tip_hY = e.pageY - tipNode.offsetTop
+
+
+        // 5.2 给页面注册时间 鼠标移动就会触发
+        document.onmousemove = function (e) {
+          //5.3 计算鼠标现在的位置 鼠标在页面的位置 减去盒子内鼠标位置 得到盒子要移动的距离
+          var x = e.pageX - tip_hX
+          var y = e.pageY - tip_hY
+
+          // 5.4 赋值给主盒子
+          tipNode.style.left = x + 'px'
+          tipNode.style.top = y + 'px'
+        }
+
+        // 5.5 鼠标松开清除页面事件
+        tip_h.onmouseup = function () {
+          document.onmousemove = null
+        }
+      }
+      cont.appendChild(tipNode)
+    }
+
+
+    //7. 添加新盒子
+    but.onclick = function () {
+      //7.1 点击添加按钮使新纸条盒子显示
+      add.style.display = 'block'
+      bg.style.display = 'block'
+
+      // 7.6 每次点击添加盒子 清除盒子行内位置
+      add.style.left = ''
+      add.style.top = ''
+    }
+    // 7.2 点击盒子内关闭按钮盒子隐藏
+    closeBtn.onclick = function () {
+      add.style.display = 'none'
+      bg.style.display = 'none'
+    }
+    // 7.3 点击遮罩层任意位置盒子隐藏
+    bg.onclick = function () {
+      add.style.display = 'none'
+      bg.style.display = 'none'
+    }
+
+    // 7.4 双击标题盒子隐藏
+    titleBox.ondblclick = function () {
+      add.style.display = 'none'
+      bg.style.display = 'none'
+    }
+
+
+    // 7.5 按下鼠标拖动盒子
+    titleBox.onmousedown = function (e) {
+      var titleBoxX = e.pageX - add.offsetLeft
+      var titleBoxY = e.pageY - add.offsetTop
+
+      document.onmousemove = function (e) {
+        var x = e.pageX - titleBoxX + 250
+        var y = e.pageY - titleBoxY - 140
+        add.style.left = x + 'px'
+        add.style.top = y + 'px'
+      }
+
+      titleBox.onmouseup = function () {
+        document.onmousemove = null
+      }
+    }
+
+
+    // 8. 提交按钮被单击
+    loginBtn.onclick = function () {
+      //8.1 判断输入内容
+      if (!(addName.value.trim())) {
+        alert('姓名不能为空')
+      } else if (!(addCont.value.trim())) {
+        alert('内容不能为空')
+      } else {
+        // 8.2 创建对象存储参数
+        var obj = {
+          name: addName.value,
+          content: addCont.value,
+          time: getDateString(),
+          id: messages.length + 1,
+        }
+        //8.3 添加到数组最后
+        messages.push(obj)
+        //8.4 调用函数生成新对象
+        createBox(obj)
+
+        //8.5 隐藏盒子 清空输入框
+        add.style.display = 'none';
+        bg.style.display = 'none';
+        addName.value = ''
+        addCont.value = ''
+      }
+
+    }
+
+
+
+    srt.onclick = function () {
+      var str = JSON.stringify(messages)
+      
+      localStorage.setItem('str', str)
+
+    }
+
+  del.onclick = function () {
+    localStorage.removeItem('str')
+  }
+
+
+
+
+
+
+
+    function roll() {
+      return {
+        // 2.3 直接返回对象 用.来调用
+        //水平位置 400-1000 向上取整
+        x: Math.ceil(Math.random() * 600) + 400,
+        //垂直位置 0-500
+        y: Math.ceil(Math.random() * 500)
+      }
+    }
+
+
+
+
+    /**
+     * 生成日期字符串的函数
+     * @param obj
+     * @returns {string}
+     */
+    function getDateString() {
+      var obj = new Date()
+      var year = obj.getFullYear()
+      var month = obj.getMonth() + 1 //0--11
+      // getDay() 获得的是星期几，而是从周日开始算的
+      var day = obj.getDate()
+      var hour = obj.getHours()
+      var minute = obj.getMinutes()
+      var second = obj.getSeconds()
+      month = month < 10 ? '0' + month : month
+      day = day < 10 ? '0' + day : day
+      hour = hour < 10 ? '0' + hour : hour
+      minute = minute < 10 ? '0' + minute : minute
+      second = second < 10 ? '0' + second : second
+      return year + '-' + month + '-' + day + '  ' + hour + ':' + minute + ':' + second
+    }
+
+
+
+
+  </script>
+
+
+
+
+
+
+
+</body>
+
+</html>

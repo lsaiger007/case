@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>评分控件</title>
+  <style>
+    .box {
+      margin: 100px auto;
+      width: 200px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    ul li {
+      float: left;
+      font-size: 30px;
+      cursor: pointer;
+    }
+  </style>
+  <script src="./js/jquery-1.12.2.js"></script>
+  <script>
+    $(function () {
+      $('.box li').on('mousemove', function () {
+        $(this).html('★').prevAll().html('★').end().nextAll().html('☆')
+      })
+      $('.box').on('mouseleave', function () {
+        $(this).find('li').html('☆')
+      })
+
+      $('.box li').on('click', function () {
+        $(this).html('★').prevAll().html('★').end().nextAll().html('☆')
+        $('.box').off('mouseleave')
+        $('.box li').off('mousemove')
+      })
+
+
+
+
+
+    })
+  </script>
+</head>
+
+<body>
+  <div class="box">
+    <ul>
+      <li>☆</li>
+      <li>☆</li>
+      <li>☆</li>
+      <li>☆</li>
+      <li>☆</li>
+    </ul>
+  </div>
+</body>
+
+</html>

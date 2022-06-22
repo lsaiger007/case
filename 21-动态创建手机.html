@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>03-动态创建手机</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    ul li {
+      width: 160px;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <input type="button" value="创建手机列表" id="btn">
+  <div id="box"></div>
+
+
+  <!-- <ul>
+    <li></li>
+    <li></li>
+  </ul>
+ -->
+
+
+  </div>
+
+
+
+
+
+
+
+  <script>
+
+    var phones = ['华为', '小米', '苹果', '三星', 'OPPO', 'VIVO', '小辣椒', '红米']
+
+    //1. 获取页面样式
+    var box = document.getElementById('box')
+    var but = document.querySelector('input')
+
+
+    //2. 给按钮注册事件
+    but.onclick = function () {
+      // 4.解决多次生成 获取box内子元素，如果有直接退出函数
+      var firstChild = box.firstElementChild
+      if (firstChild) {
+        return
+      }
+
+
+      //3. 生成ul
+      var ul = document.createElement('ul')
+      for (var i = 0; i < phones.length; i++) {
+        //3.1 根据手机数组长度创建li
+        var lis = document.createElement('li')
+        lis.innerText = phones[i]
+        //3.2 创建完成添加到ul
+        ul.appendChild(lis)
+
+        //5. 奇偶换 判断为偶数 否则为奇数
+        if (i % 2 === 0) {
+          lis.style.backgroundColor = '#c0c0c0'
+        } else {
+          lis.style.backgroundColor = '#d0d0d0'
+        }
+
+        //5.1 鼠标移入变色
+        var cl
+        lis.onmouseover = function () {
+          // 存储原本颜色
+          cl = this.style.backgroundColor
+          this.style.backgroundColor = 'orangered'
+        }
+
+        //5.1 鼠标移入变色
+        var cl
+        lis.onmouseout = function () {
+          // 存储原本颜色
+          this.style.backgroundColor = cl
+
+        }
+
+      }
+
+
+
+      //5.2 
+
+      // 3.3 创建完成添加到box
+      box.appendChild(ul)
+
+    }
+
+
+
+  </script>
+
+
+</body>
+
+</html>

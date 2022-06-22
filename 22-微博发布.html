@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>05-微博发布</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .box {
+      width: 600px;
+      margin: 100px auto;
+      border: 1px solid #000;
+      padding: 20px;
+    }
+
+    textarea {
+      width: 450px;
+      height: 160px;
+      outline: none;
+      /*去掉环绕线*/
+      resize: none;
+      /*禁用拖动*/
+    }
+
+    ul {
+      width: 450px;
+      padding-left: 80px;
+    }
+
+    ul li {
+      /*line-height: 25px;*/
+      height: 25px;
+      width: 450px;
+      /*border: 1px solid #000;*/
+      border-bottom: 1px dashed #cccccc;
+    }
+
+    input {
+      float: right;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="box" id="weibo">
+    <span>微博发布</span>
+
+    <textarea name="" id="txt" cols="30" rows="10"></textarea>
+
+    <button id="btn">发布</button>
+
+    <!-- <ul id="ul">
+      <li>这是一个内容 <input type="button" value="删除"></li>
+    </ul> -->
+
+  </div>
+
+
+
+
+  <script>
+
+    //1. 获取页面元素
+    var box = document.querySelector('.box')
+    var txt = document.getElementById('txt')
+    var but = document.getElementById('btn')
+
+    //2. 创建发布盒子
+    var ul = document.createElement('ul')
+    //追加到box盒子最后面
+    box.appendChild(ul)
+
+    //3. 给事件源注册事件
+    but.onclick = function () {
+      //判断用户输入内容 先去掉左右空格 如果为空 结果false 再取反提醒用户
+      if (!txt.value.trim()) {
+        alert('您还没有输入内容,请重新输入...')
+        return
+      }
+
+
+
+
+      //3.5.1 让li添加到最前面 获取ul子元素节点
+      var lis = ul.children
+
+
+      //3.1 创建单个发布标签
+      var li = document.createElement('li')
+      //标签间插入文本域内容 文本域清空
+      li.innerText = txt.value
+      txt.value = ''
+
+      //3.2 创建删除按钮
+      var lBut = document.createElement('input')
+      lBut.type = 'button'
+      lBut.value = '删除'
+
+      // 3.3 给删除注册事件
+      lBut.onclick = function () {
+        //parentNode只能父元素调用
+        this.parentNode.parentNode.removeChild(this.parentNode)
+      }
+      //3.4 将删除按钮追加到li标签
+      li.appendChild(lBut)
+
+      //3.5.2 将li追加到ul标签 第一个值为标签 第二个值为位置
+      // ul.appendChild(li)
+      ul.insertBefore(li, lis[0])
+    }
+
+
+
+  </script>
+
+</body>
+
+</html>

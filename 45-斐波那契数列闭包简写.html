@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>11-斐波那契数列闭包简写</title>
+  <style>
+  </style>
+</head>
+
+<body>
+
+
+
+
+
+  <script>
+    var getFB = (function () {
+      //闭包为自执行函数 将arr定义为局部变量 并返回函数体
+      var arr = []
+      return function (n) {
+        if (n === 1 || n === 2) return 1
+        // else return arr[n] = arr[n] === undefined ? getFB(n - 1) + getFB(n - 2) : arr[n]
+        else return arr[n] ??=  getFB(n - 1) + getFB(n - 2) 
+      }
+    }())
+
+    //这里实际调用是自执行函数的返回值函数
+    console.log(getFB(40))
+
+    console.log(`\(T_T)/`)
+
+
+
+  </script>
+
+
+</body>
+
+</html>

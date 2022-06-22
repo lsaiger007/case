@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>静态文件01</title>
+  <style>
+    .box {
+      width: 322px;
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      overflow: hidden;
+    }
+
+    span {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 30px;
+      height: 20px;
+      /*background-color: red;*/
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="box" id="box">
+    <span id="closeButton"></span>
+    <div class="hd" id="headPart">
+      <img src="images/360kj (2).jpg" alt="" />
+    </div>
+    <div id="bottomPart" class="bd">
+      <img src="images/360kj (1).jpg" alt="" />
+    </div>
+  </div>
+
+
+
+
+  <script>
+
+    var box = document.getElementById('box')
+
+    var closeBut = document.getElementById('closeButton')
+
+    var bottomPart = document.getElementById('bottomPart')
+
+    closeBut.onclick = function () {
+      //进入先调用animate 让底部变为0
+      animate(bottomPart, {
+        height: 0
+        // 执行完毕后animate执行第三个函数,再次调用
+      }, function () {
+        animate(box, {
+          width: 0
+        })
+      })
+    }
+
+
+
+    function animate(demo, obj, fn) {
+      if (demo.timeId) {
+        clearInterval(demo.timeId)
+      }
+      demo.timeId = setInterval(function () {
+        //全局变量为flag
+        var flag = true
+        // 循环遍历对象，获取对象属性名及目标值
+        for (var key in obj) {
+          // 去掉字母取整 获取当前元素的属性值
+          var leader = parseInt(getStyle(demo, key))
+
+          //缓动步长 目标值减当前值 差值除以10
+          var step = (obj[key] - leader) / 10
+
+          // 判断步长正负 正数向上取整 负数向下
+          step = step > 0 ? Math.ceil(step) : Math.floor(step)
+          console.log(step)
+
+          // 当前移动值 = 目前所在值+步长
+          var current = leader + step
+
+          //移动位置
+          demo.style[key] = current + 'px'
+
+          //如果当前属性值没到 就把flag改为false不会清除定时器
+          if (obj[key] !== current) {
+            flag = false
+          }
+        }
+
+        //如果上面代码都没有改变flag值，此时他为全局变量true
+        // 进入停掉定时器
+        if (flag) {
+          clearInterval(demo.timeId)
+
+          // 清除定时器之后，如果有回调函数，则执行回调函数中的代码
+          if (typeof fn === 'function') {
+            fn()
+          }
+        }
+      }, 15);
+    }
+
+
+    // attr是attribute 属性的意思
+    function getStyle(ele, attr) {
+      // 能力检测 就是要看当前的浏览器是否支持此标签对象的属性或是方法
+      if (ele && ele.currentStyle) {
+        return ele.currentStyle[attr]
+      } else {
+        return window.getComputedStyle(ele, null)[attr]
+      }
+    }
+
+
+
+
+  </script>
+</body>
+
+</html>

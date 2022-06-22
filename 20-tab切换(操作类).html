@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>09-tab切换(操作类)</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .box {
+      width: 400px;
+      height: 300px;
+      border: 1px solid #ccc;
+      margin: 100px auto;
+    }
+
+    .hd {
+      height: 45px;
+    }
+
+    .hd span {
+      display: inline-block;
+      /*将行内元素转换成行内块元素，宽高才起作用*/
+      width: 90px;
+      background-color: pink;
+      line-height: 45px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .hd span.current {
+      background-color: purple;
+      /*紫色*/
+    }
+
+    .bd li {
+      height: 255px;
+      background-color: purple;
+      display: none;
+      /*设置隐藏*/
+    }
+
+    .bd li.current {
+      display: block;
+      /*显示*/
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" id="box1">
+
+    <div class="hd">
+      <span class="current">体育</span>
+      <span>娱乐</span>
+      <span>新闻</span>
+      <span>综合</span>
+    </div>
+
+    <div class="bd">
+      <ul>
+        <li class="current">我是体育模块</li>
+        <li>我的娱乐模块</li>
+        <li>我是新闻模块</li>
+        <li>我是综合模块</li>
+      </ul>
+    </div>
+
+  </div>
+
+
+  <script>
+
+    var but = document.querySelectorAll('.hd span')
+    var cot = document.querySelectorAll('.bd li')
+
+
+    //1. 给每个事件源注册事件
+    for (var i = 0; i < but.length; i++) {
+      //4. 存储每个按钮的索引
+      but[i].setAttribute('index', i)
+
+      //2. 给每个按钮注册事件
+      but[i].onclick = function () {
+        //3. 先排外
+        for (var j = 0; j < but.length; j++) {
+          //删除类的内容
+          cot[j].classList.remove('current')
+          but[j].classList.remove('current')
+        }
+        //3. 再把当前触发的标签添加类的内容
+        this.classList.add('current')
+        //5. 再改变按钮对应的块显示
+        cot[this.getAttribute('index')].classList.add('current')
+      }
+
+    }
+
+
+  </script>
+
+
+</body>
+
+</html>

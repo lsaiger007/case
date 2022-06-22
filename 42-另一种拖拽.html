@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>03-另一种拖拽</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: orangered;
+    }
+
+    .foo {
+      position: fixed;
+      left: 40%;
+      top: 20%;
+      border: 1px solid black;
+      width: 300px;
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" draggable="true"></div>
+  <div class="foo">
+  </div>
+
+
+  <script>
+    var box = document.querySelector('.box')
+    var foo = document.querySelector('.foo')
+
+    //1. dom2注册 鼠标进到目标对象触发事件
+    foo.addEventListener('dragover', function (e) {
+      console.log('目标元素的事件触发了...')
+      // 2. 阻止原标签对象禁止被拖拽的默认行为
+      e.preventDefault()
+    })
+    // 3. 注册松开原标签对象事件
+    foo.addEventListener('drop', function () {
+      console.log('drop事件被触发了...')
+      // 4. 剪切原标签对象到现在的对象内
+      this.appendChild(box)
+    })
+
+  </script>
+
+</body>
+
+</html>

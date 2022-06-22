@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>Bootstrap 101 Template</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+
+
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1"></div>
+      <span class="h1"></span>
+    </div>
+  </div>
+
+
+  <script>
+    var a = []
+    function Foo() {
+      getName = function () {
+        a.push(1)
+      }
+      return this
+    }
+    Foo.getName = function () {
+      a.push(2)
+    }
+    Foo.prototype.getName = function () {
+      a.push(3)
+    }
+    var getName = function () {
+      a.push(4)
+    }
+    function getName() {
+      a.push(5)
+    }
+
+    Foo.getName() //2 win.Foo.getName() 
+    getName() //win.getName 4
+    Foo().getName() //1 进入foo 改写win下getName 
+    getName() //1 win.getName 
+    new Foo.getName() //2 在new执行完毕返回obj之前，new会调用这个函数一次 
+    new Foo().getName()//3 new构造函数返回实例对象 实例对象.getName 
+    //这个构造函数的方法没有this 所以是构造函数自己的方法 实例对象没有这个方法 
+    //所以去原型链去找Foo.prototype.getName 
+    new new Foo().getName() //3 先执行第一个new 返回实例对象 
+    //实例对象.getName 最后再new这个实例对象 
+    console.log(a)
+    // [2, 4, 1, 1, 2, 3, 3]
+
+
+
+  </script>
+
+
+
+
+</body>
+
+</html>

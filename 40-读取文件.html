@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>04-读取文件</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      border: 1px solid #000;
+      margin-top: 100px;
+      border-radius: 50%;
+      /* overflow: hidden; */
+    }
+  </style>
+</head>
+
+<body>
+
+  <input type="file" id="txt">
+  <div class="box">
+  </div>
+  <script>
+
+    // 1. 获取页面中的标签对象
+    var txt = document.getElementById('txt')
+    var box = document.querySelector('.box')
+    // FileReader() 构造函数
+
+    // 2. 注册事件
+    // 3. 当图片被上传时change被触发，图片是this当前实例对象
+    txt.addEventListener('change', function () {
+      // //3.1 返回原型对象input#txt
+      // console.dir(this)
+      // //3.2 图片储存在files: FileList
+      // console.log(this.files)
+      // //3.3 有length 为当前上传文件数量，是伪数组
+      // console.log(this.files[0])
+
+      // 4. 创建文件实例对象
+      var fr = new FileReader; // 构造函数中没有参数的时候，可以不加小括号
+
+      // 5. 读取图片中的数据并转换成base64图片格式
+      // fr.readAsText(this.files[0]) // 读取纯文本文件
+
+      // // 6. 当读取并转换完毕时给box中显示
+      // fr.onload = function(){
+      //   // 当load事件触发的时候，就说明文件读完了
+      //   console.log(fr.result) 
+      // }
+      // fr.result中存着读取文件的数据
+
+      //7. 读取被传入的图片 并转为base64编码
+      fr.readAsDataURL(this.files[0])
+
+      // 注册事件 当load事件触发的时候，就说明文件读完了
+      fr.onload = function () {
+        //8. 创建img标签 并把图片地址添加进去
+        box.innerHTML = '<img src="' + fr.result + '" />'
+      }
+
+
+    })
+
+
+  </script>
+
+
+</body>
+
+</html>

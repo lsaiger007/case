@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>01-遍历数组</title>
+  <style>
+  </style>
+</head>
+
+<body>
+
+
+
+  <script>
+
+
+    let list = [
+      // wu: 武力    zhi:智力
+      { id: 1, name: '张飞', wu: 97, zhi: 10 },
+      { id: 2, name: '诸葛亮', wu: 55, zhi: 99 },
+      { id: 3, name: '赵云', wu: 97, zhi: 66 },
+      { id: 4, name: '周瑜', wu: 80, zhi: 98 },
+      { id: 5, name: '吕布', wu: 100, zhi: 8 },
+      { id: 6, name: '司马懿', wu: 55, zhi: 98 }
+    ]
+
+
+    // 1.求数组中所有英雄的武力平均值
+    function wuPj(lis) {
+      return lis.reduce((prev, element) => prev + element.wu, 0) / lis.length
+    }
+
+    // console.log(wuPj(list))
+
+    // 2.得到一个新数组，只保留英雄的名字， `['张飞', '诸葛亮', '赵云', '周瑜', '吕布', '司马懿']`
+    function newName(lis) {
+      return lis.map((element) => element.name)
+    }
+    // console.log(newName(list))
+
+    // 3. 得到一个新数组，新数组中只保留武力值超过90的英雄
+    function newIQ90(lis) {
+      return lis.filter((element, index, arr) => element.zhi > 90)
+    }
+
+    // console.log(newIQ90(list))
+
+    // 4. 删除数组中名字为周瑜的英雄
+
+    function del(lis) {
+      return lis.filter((element, index, arr) => element.name !== '周瑜')
+    }
+
+    // console.log(del(list))
+
+    // 5.判断数组中所有英雄的武力是否都超过60， 最终打印结果： `全是猛将`  `还有弱鸡`     使用两种方式实现
+
+
+    function wu60(lis) {
+      var flag = lis.every((element) => element.wu > 60);
+      return flag === true ? '全是猛将' : '还有弱鸡'
+    }
+
+    // console.log(wu60(list))
+
+    function wu6002(lis) {
+      var flag = lis.some((element) => element.wu < 60)
+      return flag === true ? '还有弱鸡' : '全是猛将'
+    }
+
+    // console.log(wu6002(list))
+
+
+    //  6.删除数组中名所有智力低于60的英雄
+    // 还可以用双层for循环 i--方法
+
+    function IQ60(lis) {
+      return lis.filter((element) => element.zhi > 60)
+    };
+
+
+    // for (var i = 0; i < list.length; i++) {
+    //   for (var j = 0; j < list[i].length; j++) {
+    //     if (list[i].wu < 60) {
+    //       list.splice(list[i])
+    //       i--
+    //     }
+    //   }
+    // }
+
+    // console.log(list)
+
+
+    // console.log(IQ60(list))
+
+    // 7. 找到数组中id为2的英雄，求他的武力 + 智力的综合
+
+    function two(lis) {
+      var lis2 = lis.filter((element) => element.id === 2)
+      return lis2[0].wu + lis2[0].zhi
+    }
+
+    // console.log(two(list))
+
+
+  </script>
+
+
+</body>
+
+</html>

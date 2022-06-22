@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>09-美女相册</title>
+  <style>
+    body {
+      font-family: "Microsoft Yahei";
+      color: #333;
+      background-color: #ccc;
+      margin: 1em 10%;
+    }
+
+    h2 {
+      color: #333;
+      background-color: transparent;
+    }
+
+    a {
+      color: #c60;
+      background-color: transparent;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    ul {
+      padding: 0;
+    }
+
+    li {
+      float: left;
+      padding: 1em;
+      list-style: none;
+    }
+
+    #imagegallery li {
+      margin: 0 20px 20px 0;
+      padding: 0;
+      display: inline;
+    }
+
+    #imagegallery li a img {
+      border: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>美女相册</h2>
+  <ul id="imagegallery">
+    <!--画廊，美术馆-->
+    <li>
+      <a href="./images/1.jpg" alt="" title="美女A">
+        <img src="./images/1-small.jpg" width="100" alt="美女1" />
+      </a>
+    </li>
+    <li>
+      <a href="./images/2.jpg" alt="" title="美女B">
+        <img src="./images/2-small.jpg" width="100" alt="美女2" />
+      </a>
+    </li>
+    <li>
+      <a href="./images/3.jpg" alt="" title="美女C">
+        <img src="./images/3-small.jpg" width="100" alt="美女3" />
+      </a>
+    </li>
+    <li>
+      <a href="./images/4.jpg" alt="" title="美女D">
+        <img src="./images/4-small.jpg" width="100" alt="美女3" />
+      </a>
+    </li>
+    <li>
+      <a href="./images/5.jpg" alt="" title="美女E">
+        <img src="./images/5-small.jpg" width="100" alt="美女3" />
+      </a>
+    </li>
+  </ul>
+  <div style="clear:both"></div>
+  <img src="./images/placeholder.png" width="450" id="img" alt="" />
+  <p id="des">请选择一张图片</p>
+
+  <script>
+    // 获取两个标签间的内容，用innerText或是innerHTML
+    // 1. 点击哪个小图片，就要让img处显示对应的大图片出来
+    // 2. 还要让p显示对应的描述,比如点击第一个小图片，img处要显示第1个大图片，p处要显示"美女A"
+    // 3. 行内式和内嵌式都要实现一下 
+
+    //1. 获取页面中标签对象
+    var link = document.querySelectorAll('#imagegallery li a')
+    var img = document.getElementById('img')
+    var des = document.getElementById('des')
+
+    //2. 给事件源注册事件
+    for (var i = 0; i < link.length; i++) {
+      link[i].onclick = function () {
+        img.src = this.href
+        des.innerText = this.title
+        return false // 阻止a标签的默认跳转行为
+      }
+    }
+
+
+
+
+
+  </script>
+
+
+</body>
+
+</html>

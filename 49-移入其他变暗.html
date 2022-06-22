@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>空出展示</title>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    body {
+      background: #000;
+    }
+
+    .wrap {
+      margin: 100px auto 0;
+      width: 630px;
+      height: 394px;
+      padding: 10px 0 0 10px;
+      background: #000;
+      overflow: hidden;
+      border: 1px solid #fff;
+    }
+
+    .wrap li {
+      float: left;
+      margin: 0 10px 10px 0;
+
+    }
+
+    .wrap img {
+      display: block;
+      border: 0;
+    }
+  </style>
+  <script src="./js/jquery-1.12.2.js"></script>
+  <script>
+    $(function () {
+
+      $('.wrap ul li').on('mouseover', function () {
+        //除了当前元素的所有兄弟元素
+        $(this).siblings().stop().fadeTo(100, .4)
+      })
+      $('.wrap').on('mouseout', function () {
+        //查找当前元素的某个子元素
+        $(this).find('li').stop().fadeTo(100, 1)
+      })
+
+
+
+
+
+    })
+  </script>
+</head>
+
+<body>
+  <div class="wrap">
+    <ul>
+      <li><a href="#"><img src="./images/yrba1.jpg" alt="" /></a></li>
+      <li><a href="#"><img src="./images/yrba2.jpg" alt="" /></a></li>
+      <li><a href="#"><img src="./images/yrba3.jpg" alt="" /></a></li>
+      <li><a href="#"><img src="./images/yrba4.jpg" alt="" /></a></li>
+      <li><a href="#"><img src="./images/yrba5.jpg" alt="" /></a></li>
+      <li><a href="#"><img src="./images/yrba6.jpg" alt="" /></a></li>
+    </ul>
+  </div>
+</body>
+
+</html>

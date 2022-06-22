@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>05-终极拖拽</title>
+  <style>
+    .box {
+      width: 500px;
+      height: 500px;
+      border: 1px solid black;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <script>
+    var box = document.querySelector('.box')
+    //1. 进到目标对象中才会真正触发
+    box.addEventListener('dragover', function (e) {
+      // 1.1 阻止默认跳转行为
+      e.preventDefault()
+    })
+    //2. 松开原标签对象会触发
+    box.addEventListener('drop', function (e) {
+      console.log(e) // 可以通过事件对象的dataTransfer.files来获取拖拽过来的图片
+      // 2.1 创建读取对象
+      var fr = new FileReader();
+      // 2.2 获取图片进行转换
+      fr.readAsDataURL(e.dataTransfer.files[0])
+      // 2.3 注册load事件
+      fr.onload = function () {
+        box.innerHTML = '<img src="' + fr.result + '" />'
+      }
+      // 2.1 阻止默认跳转行为
+      e.preventDefault()
+    })
+  </script>
+</body>
+
+</html>

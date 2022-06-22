@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>静态</title>
+  <style>
+    body,
+    ul,
+    ol,
+    li,
+    img {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #box {
+      width: 490px;
+      height: 270px;
+      padding: 5px;
+      /*background-color: red;*/
+      border: 1px solid #ccc;
+      margin: 100px auto;
+      position: relative;
+    }
+
+    .ad {
+      width: 490px;
+      height: 270px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #box img {
+      width: 490px;
+    }
+
+    .ad ul li {
+      float: left;
+    }
+
+    .ad ul {
+      position: absolute;
+      top: 0;
+      width: 2940px;
+    }
+
+    .ad ul li.current {
+      display: block;
+    }
+
+    #arr {
+      display: none;
+    }
+
+    #arr span {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      position: absolute;
+      /*left: 5px;*/
+      top: 50%;
+      margin-top: -20px;
+      background-color: #000;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      font-family: '黑体';
+      font-size: 30px;
+      color: #fff;
+      opacity: 0.3;
+    }
+
+    #arr #left {
+      left: 5px;
+    }
+
+    #arr #right {
+      right: 5px;
+      /*left: auto;*/
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box" class="all">
+    <div class="ad">
+      <ul id="imgs">
+        <li><img src="images/jiaodiantu (1).jpg" alt="" /></li>
+        <li><img src="images/jiaodiantu (2).jpg" alt="" /></li>
+        <li><img src="images/jiaodiantu (3).jpg" alt="" /></li>
+        <li><img src="images/jiaodiantu (4).jpg" alt="" /></li>
+        <li><img src="images/jiaodiantu (5).jpg" alt="" /></li>
+      </ul>
+    </div>
+    <div id="arr">
+      <span id="left">&lt;</span>
+      <span id="right">&gt;</span>
+    </div>
+  </div>
+
+
+  <script>
+    // 大盒子
+    var box = document.querySelector('#box')
+
+    //轮播图盒子
+    var ul = box.querySelector('#imgs')
+
+    //ul里的单个li图片
+    var lis = ul.children
+
+    //图片宽度
+    var ad = document.querySelector('.ad')
+    var imgWidth = ad.offsetWidth
+
+    //箭头
+    var arr = document.querySelector('#arr')
+    var arrL = arr.querySelector('#left')
+    var arrR = arr.querySelector('#right')
+
+
+
+
+
+    box.onmouseover = function () {
+      arr.style.display = 'block'
+    }
+    box.onmouseout = function () {
+      arr.style.display = 'none'
+    }
+
+    var index = 0
+    arrR.onclick = function () {
+      if (index < lis.length - 1) {
+        index++
+      }
+      var target = -imgWidth * index
+      mobile(ul, target)
+      //每点击一次 需要移动img个图片的宽度
+    };
+
+
+    arrL.onclick = function () {
+      if (index > 0) {
+        index--
+      }
+      var target = -imgWidth * index
+      mobile(ul, target)
+      //每点击一次 需要移动img个图片的宽度
+    };
+
+
+    function mobile(obj, target) {
+      // 将定时器归当前对象管理
+      clearInterval(obj.timeID)
+
+      obj.timeID = setInterval(function () {
+        //获取当前位置
+        var leader = obj.offsetLeft
+
+        // 如果目标值大于现在位置 则要加步长 所以为正数
+        // 如果目标值比现在位置小 则要减去步长 所以为负数
+        var step = 20
+        step = target > leader ? step : -step;
+
+        //取绝对值 如果目标位置减去现在位置 大于步长 进入执行
+        if (Math.abs(target - leader) > Math.abs(step)) {
+          // 移动步长距离
+          leader += step
+          //移动盒子
+          obj.style.left = leader + 'px'
+        } else {
+          // 如果最后相差的距离不足一个步长的时候，为了能够真正的到达目标位置，可以直接跳到目标位置
+          obj.style.left = target + 'px'
+          //清除定时器
+          clearInterval(obj.timeID)
+        }
+      }, 15);
+      //间隔30毫秒执行一次
+    };
+
+
+  </script>
+
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <script>
+
+    /**写下判断闰年的表达式,设
+  润年的判定(符合下面两个条件之一即可):
+  年份能够被400整除.(2000)
+  年份能够被4整除但不能被100整除.(2008)   
+  四年一润而百年不润，四百年再润
+
+  输入某年某月某日，判断这一天是这一年的第几天？
+  */
+
+    function LeapYear(year) {
+      if ((year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0)) {
+        return 1 //判断闰年输出1
+      } else {
+        return 0 //否则输出0
+      }
+    }
+
+
+    function getDay(n1, n2, n3) {
+      //先判断年份是否闰年，输出不同数组
+      if (LeapYear(n1) === 1) {
+        var Monthly = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+      } else var Monthly = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+      //月份相加 -1月 所以i小于n2 n2当月不加到总数
+      var daily = 0
+      for (var i = 1; i < n2; i++) {
+        daily += Monthly[i - 1] //因为数组中第一个序号是0 所以-1
+      }
+      //最后加上当月天数
+      daily += n3
+      return daily
+    }
+
+    var year = +prompt('请输入年') //转化为数字
+    var month = +prompt('请输入月')
+    var day = +prompt('请输入日')
+    var days = getDay(year, month, day)
+    document.write(year + '年的' + month + '月' + day + '日,是这年的第' + days + '天')
+
+
+  </script>
+
+
+
+
+</body>
+
+</html>

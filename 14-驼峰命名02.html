@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <script>
+    // 'get-element-by-id' // 'getElementById'
+    var char = 'get-element-by-id'
+
+    function Hump_x09(a) {
+      var newChar = a.split('-')
+      //以 - 切割字符 输出到新数组 ['get', 'element', 'by', 'id']
+
+      var str = newChar[0]
+      //小驼峰第一个单词不需要大写 直接输入到新变量 get
+
+      //循环遍历后面 所以从数组索引1开始
+      for (var i = 1; i < newChar.length; i++) {
+        str += newChar[i][0].toUpperCase() + newChar[i].slice(1)
+      }
+      //把后面字符串拼接到str
+      //newChar这个数组索引第i个字符串的第0个字母 把他大写
+      //Element 
+      //然后拼接 newChar数组中第i个，他的里面第1个开始截取到新数组
+      return str
+    }
+    console.log(Hump_x09(char)) //调用函数
+  </script>
+
+
+
+
+</body>
+
+</html>

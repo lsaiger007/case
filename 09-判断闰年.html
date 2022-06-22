@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <script>
+
+    /**写下判断闰年的表达式,设
+  润年的判定(符合下面两个条件之一即可):
+  年份能够被400整除.(2000)
+  年份能够被4整除但不能被100整除.(2008)   
+  四年一润而百年不润，四百年再润
+  */
+
+
+
+
+    function LeapYear(year) {
+      if ((year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0)) {
+        document.write('您输入的是闰年')
+      } else {
+        document.write('您输入的不是闰年')
+      }
+    }
+
+    var year= LeapYear(2001)
+  </script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>06-投票器</title>
+  <style>
+  </style>
+</head>
+
+<body>
+
+  <input type="button" value="张三0">
+  <input type="button" value="李四0">
+  <input type="button" value="王五0">
+
+
+
+
+  <script>
+
+
+    var buts = document.querySelectorAll('input')
+
+    //给每个按钮注册事件
+    for (var i = 0; i < buts.length; i++) {
+      //给按钮注册自执行函数
+      buts[i].onclick = (function (i) {
+        // 每个按钮的私有属性 用来记票
+        var num = 0
+        return function () {
+          //当按钮被点击才会被触发
+          num++
+          buts[i].value = buts[i].value.slice(0, 2) + num
+        }
+        //传入索引i
+      })(i)
+    }
+
+
+
+
+
+
+  </script>
+
+
+</body>
+
+</html>

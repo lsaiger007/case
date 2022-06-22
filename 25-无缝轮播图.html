@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      /*去掉图片底部3PX距离*/
+      vertical-align: middle;
+    }
+
+    .box {
+      width: 300px;
+      height: 200px;
+      margin: 100px auto;
+      /*background-color: pink;*/
+      position: relative;
+      border: 1px solid #ccc;
+      padding: 5px;
+      /* overflow: hidden; */
+    }
+
+    .box ul {
+      width: 1500px;
+      position: absolute;
+      left: 0;
+      top: 5px;
+    }
+
+    .box ul li {
+      float: left;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" id="screen">
+    <ul>
+      <li><img src="images/wufenlbt (1).jpg" alt="" /></li>
+      <li><img src="images/wufenlbt (2).jpg" alt="" /></li>
+      <li><img src="images/wufenlbt (3).jpg" alt="" /></li>
+      <li><img src="images/wufenlbt (4).jpg" alt="" /></li>
+      <li><img src="images/wufenlbt (1).jpg" alt="" /></li>
+    </ul>
+  </div>
+
+
+
+
+  <script>
+
+    //轮播展示框
+    var box = document.querySelector('.box')
+
+    //轮播图长条
+    var ul = document.querySelector('.box ul')
+
+    var lis = ul.children
+
+    //轮播图宽度
+    var imgWidth = box.offsetHeight
+
+
+    var timeId = setInterval(function () {
+      play()
+    }, 50)
+
+    box.onmouseover = function () {
+      clearInterval(timeId)
+    }
+    box.onmouseout = function () {
+      timeId = setInterval(function () {
+        play()
+      }, 50)
+    }
+
+    function play() {
+      var leader = ul.offsetLeft
+      leader -= 10
+      if (leader > -1200) {
+        ul.style.left = leader + 'px'
+      } else {
+        ul.style.left = '0px'
+      }
+
+    }
+
+
+  </script>
+</body>
+
+</html>

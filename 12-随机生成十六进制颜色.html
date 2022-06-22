@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>标题</title>
+
+
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="button" id="btn" value="更改颜色">
+  <div class="box" id="box"></div>
+  <script>
+
+    //分析
+    //十六进制是0~9 a~f 16个数
+    //随机数生成是0~1之间小数
+
+    function cool16() {
+      // 1. 定义一个数组 存储已知16个字符
+      var sum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f']
+      var cool = '#'
+      for (var i = 0; i < 6; i++) {
+        cool += sum[Math.floor(Math.random() * sum.length)]
+        // 2. 生成6个随机的索引 0-15   0--15  Math.random()生成的是0-1之间的随机小数
+        // 假设两个极端情况 0  0.99999*16 = 15.99999
+
+      }
+      return cool
+    }
+
+
+    // 1. 获取页面中的标签对象
+    var btn = document.getElementById('btn')
+    var box = document.getElementById('box')
+
+    // 2. 给按钮注册事件
+    btn.onclick = function () {
+      // var color = getColor()
+      // box.style.backgroundColor = color
+      box.style.backgroundColor = cool16()
+    }
+
+
+
+
+
+  </script>
+</body>
+
+</html>

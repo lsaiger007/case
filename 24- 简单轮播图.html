@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>简单轮播图</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      vertical-align: top;
+    }
+
+    .box {
+      width: 490px;
+      height: 170px;
+      margin: 100px auto;
+      padding: 5px;
+      border: 1px solid #ccc;
+
+    }
+
+    .inner {
+      width: 490px;
+      height: 170px;
+      background-color: pink;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .inner ul {
+      width: 1000%;
+      /*让ul足够的宽，可以放下所有浮动的li*/
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .inner li {
+      float: left;
+      /*li标签的宽高是靠子盒子撑起来*/
+    }
+
+    .square {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
+
+    .square span {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      background-color: #fff;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .square span.current {
+      background-color: orangered;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" id="box">
+    <div class="inner">
+      <ul>
+        <li><a href="#"><img src="images/jiandanlbt (1).jpg" alt="" /></a></li>
+        <li><a href="#"><img src="images/jiandanlbt (2).jpg" alt="" /></a></li>
+        <li><a href="#"><img src="images/jiandanlbt (3).jpg" alt="" /></a></li>
+        <li><a href="#"><img src="images/jiandanlbt (4).jpg" alt="" /></a></li>
+        <li><a href="#"><img src="images/jiandanlbt (5).jpg" alt="" /></a></li>
+      </ul>
+      <div class="square">
+        <span class="current">1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <script>
+
+    var box = document.getElementById('box')
+
+    //按钮盒子
+    var sQua = document.querySelector('.square')
+    //每个按钮
+    var but = sQua.children
+
+    //图片展示大盒子
+    var inner = document.querySelector('.inner')
+
+    // 轮播图大盒子
+    var ul = inner.querySelector('ul')
+
+    var top1 = ul.firstElementChild
+    console.log(top1)
+
+    ul.appendChild(top1.cloneNode(true))
+
+    //获取每个图片宽度
+    var imgWidth = inner.offsetWidth
+
+    console.log(imgWidth)
+    for (var i = 0; i < but.length; i++) {
+      // 存储每张图片索引
+      but[i].index = i
+      but[i].onmouseover = function () {
+        clearInterval(timeIdd)
+        for (var j = 0; j < but.length; j++) {
+          but[j].classList.remove('current')
+        }
+        this.classList.add('current')
+        var target = -imgWidth * this.index
+        mobile(ul, target)
+      }
+    }
+
+    function mobile(obj, target) {
+      // 将定时器归当前对象管理
+      clearInterval(obj.timeID)
+      obj.timeID = setInterval(function () {
+        //获取当前位置
+        var leader = obj.offsetLeft
+        // 如果目标值大于现在位置 则要加步长 所以为正数
+        // 如果目标值比现在位置小 则要减去步长 所以为负数
+        var step = 20 //步长
+        step = target > leader ? step : -step;
+        //取绝对值 如果目标位置减去现在位置 大于步长 进入执行
+        if (Math.abs(target - leader) > Math.abs(step)) {
+          // 移动步长距离
+          leader += step
+          //移动盒子
+          obj.style.left = leader + 'px'
+        } else {
+          // 如果最后相差的距离不足一个步长的时候，为了能够真正的到达目标位置，可以直接跳到目标位置
+          obj.style.left = target + 'px'
+          //清除定时器
+          clearInterval(obj.timeID)
+        }
+      }, 15);
+      //间隔15毫秒执行一次
+    };
+
+
+    function play(ul) {
+      // 获取轮播图当前位置
+      var target = 0
+      var leader = ul.offsetLeft
+      console.log(leader)
+      if (leader <= 0 && leader > -490) {
+
+        target = -490
+        but[0].classList.remove('current')
+        but[1].classList.add('current')
+        mobile(ul, target)
+      } else if (leader <= -490 && leader > -980) {
+
+        target = -980
+        but[1].classList.remove('current')
+        but[2].classList.add('current')
+        mobile(ul, target)
+      } else if (leader <= -980 && leader > -1470) {
+
+        target = -1470
+        mobile(ul, target)
+        but[2].classList.remove('current')
+        but[3].classList.add('current')
+      } else if (leader <= -1470 && leader > -1960) {
+
+        target = -1960
+        mobile(ul, target)
+        but[3].classList.remove('current')
+        but[4].classList.add('current')
+      } else if (leader <= -1960 && leader > -2450) {
+
+        target = -2450
+        mobile(ul, target)
+
+      } else if (leader <= -2450 && leader > -2940) {
+
+        target = 0
+        ul.style.left = 0
+        but[4].classList.remove('current')
+        but[0].classList.add('current')
+      }
+    }
+
+    var timeIdd = setInterval(function () {
+      play(ul)
+    }, 3000)
+
+    box.onmouseover = function () {
+      clearInterval(timeIdd)
+    }
+
+    box.onmouseout = function () {
+      var timeIdd = setInterval(function () {
+        play(ul)
+      }, 3000)
+    }
+
+
+
+
+
+  </script>
+
+
+
+
+</body>
+
+</html>

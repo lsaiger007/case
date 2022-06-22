@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>07-tab栏切换</title>
+  <style>
+    .box {
+      width: 300px;
+      height: 320px;
+      border: 1px solid #000;
+      margin: 100px auto;
+    }
+
+    .box div {
+      width: 280px;
+      height: 290px;
+      background-color: blue;
+      margin: 6px 0 0 10px;
+      display: none;
+      font-size: 30px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .box button {
+      width: 50px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+
+    <button style="background-color: red;">经济</button>
+    <button>军事</button>
+    <button>娱乐</button>
+    <button>体育</button>
+    <div style="display:block ;">经济</div>
+    <div>军事</div>
+    <div>娱乐</div>
+    <div>体育</div>
+
+  </div>
+  <script>
+    // 1. 获取页面中的标签对象
+    var box = document.querySelector('.box')
+    var but = box.getElementsByTagName('button')
+    console.log(but)
+    var div = box.getElementsByTagName('div')
+    console.log(div)
+
+    // 2. 给事件源注册事件
+
+    
+    for (var i = 0; i < but.length; i++) {
+      //因为每个按钮和内容数量对应 所以将按钮对应索引存为but的index自定义属性
+      but[i].index = i
+      //给每个选项注册事件
+      but[i].onclick = function () {
+        // 点击时先排外 每个选项清除样式
+        for (var j = 0; j < but.length; j++) {
+          but[j].style.backgroundColor = ''
+          div[j].style.display = 'none'
+        }
+
+        //然后让触发事件的元素颜色出现
+        //获取触发元素存为index的索引 让对应内容出现
+        div[this.index].style.display = 'block'
+        this.style.backgroundColor = 'red'
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>

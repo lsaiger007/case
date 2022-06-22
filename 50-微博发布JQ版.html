@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>微博发布案例</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .box {
+      width: 600px;
+      margin: 100px auto;
+      border: 1px solid #000;
+      padding: 20px;
+    }
+
+    textarea {
+      width: 450px;
+      height: 160px;
+      outline: none;
+      /*去掉环绕线*/
+      resize: none;
+      /*禁用拖动*/
+    }
+
+    ul {
+      width: 450px;
+      padding-left: 80px;
+    }
+
+    ul li {
+      /*line-height: 25px;*/
+      height: 25px;
+      width: 450px;
+      /*border: 1px solid #000;*/
+      border-bottom: 1px dashed #cccccc;
+    }
+
+    input {
+      float: right;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" id="weibo">
+    <span>微博发布</span>
+    <textarea name="" id="txt" cols="30" rows="10"></textarea>
+    <button id="btn">发布</button>
+    <!--<ul id="ul">-->
+    <!--<li>这是一个内容 <input type="button" value="删除"></li>-->
+    <!--</ul>-->
+  </div>
+  <script src="./js/jquery-1.12.2.js"></script>
+  <script>
+    // 1. 获取页面中的标签对象
+    var $box = $('#weibo')
+    var $btn = $('#btn')
+    var $txt = $('#txt')
+    $box.append("<ul id='ul'></ul>")
+
+    $btn.on('click', function () {
+      var txtValue = $txt.val()
+      $('#ul').prepend(`<li>${txtValue}<input type="button" value="删除"></li>`)
+      $txt.val('')
+    })
+
+
+
+    //使用事件委托的方式注册事件
+    $('#ul').on('click', function (e) {
+      console.log((!!$(e.target).parent().text()))
+      if (($(e.target).parent().text())) {
+        console.log(123)
+        console.log($(e.target).parent().text())
+        $(e.target).parent().remove()
+      } else {
+        
+        
+        return false
+      }
+
+    })
+
+
+  </script>
+</body>
+
+</html>

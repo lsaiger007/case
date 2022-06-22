@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>08-小火箭返航</title>
+  <style>
+    body {
+      height: 2000px;
+    }
+
+    img {
+      height: 160px;
+      position: fixed;
+      /*相对于视口进行的定位*/
+      bottom: 20px;
+      right: 50px;
+      opacity: 0;
+    }
+
+    .box {
+      width: 300px;
+      height: 300px;
+      background-color: orangered;
+    }
+  </style>
+  <script>
+
+    //页面元素完成后再加载
+    window.onload = function () {
+      // 获取小火箭
+      var img = document.getElementById('rocket')
+      // 清除定时器
+      var timeId = null
+      // 监听页面滚动状态
+      document.onscroll = function () {
+        // 获取页面被滚动高度
+        var scrollTop = scroll().scrollTop
+        //判断大于300px
+        if (scrollTop > 300) {
+          img.style.opacity = '1'
+          // 否则
+        } else {
+          img.style.opacity = '0'
+        }
+      }
+      //dom2 注册事件
+      img.addEventListener('click', function () {
+
+        timeId = setInterval(function () {
+          //30毫秒就获取页面被滚动的高度
+          var leader = scroll().scrollTop
+          // 目标值-当前值 /10
+          var step = (0 - leader) / 10
+          console.log(step)
+          // 现在值+步长
+          leader = leader + step
+          //赋值
+          window.scrollTo(0, leader)
+          //清除定时器
+          if (leader === 0) {
+            clearInterval(timeId)
+          }
+        }, 30)
+      })
+
+
+
+      function scroll() {
+        return {
+          scrollTop: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0,
+          scrollLeft: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0
+        }
+      }
+
+
+    }
+
+
+
+
+
+  </script>
+</head>
+
+<body>
+  <img src="./images/xiaohuojian.png" id="rocket" alt="">
+  <div class="box"></div>
+</body>
+
+</html>

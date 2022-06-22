@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>JavaScript</title>
+  <meta charset="utf-8">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键词描述">
+</head>
+
+<body>
+
+
+  <script>
+
+    var nums = [456, 654, 186, 168, 768]
+    var max = nums[0]
+    var min = nums[0]
+
+
+    for (var i = 0; i < nums.length; i++) {
+      if (max < nums[i]) {
+        max = nums[i]
+      }
+      if (min > nums[i]) {
+        min = nums[i]
+      }
+    }
+
+    console.log('这组数组最大数是' + max + ', 最小数是' + min)
+
+  </script>
+
+
+</body>
+
+</html>

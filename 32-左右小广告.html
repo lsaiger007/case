@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>09-左右小广告</title>
+  <style>
+    body {
+      height: 4000px;
+    }
+
+    img {
+      position: absolute;
+      top: 100px;
+      left: 60px;
+    }
+
+    #img2 {
+      left: auto;
+      right: 60px;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', function () {
+      // 思路:
+      // 1. 当向下滑动滚动条的时候，页面就向上移动，会被卷去一部分
+      // 2. 而我们两张图片是相对于页面进行的定位
+      // 3. 虽然页面移动了，但是两张图片还是想在可视区原来的位置显示并且有一个动画效果
+
+      var img1 = document.getElementById('img1')
+      var img2 = document.getElementById('img2')
+      // 1. 给页面注册滚动事件 获取页面滚动的距离
+      window.addEventListener('scroll', function () {
+        //获取window被滚动出去的距离
+        var scrollTop = scroll().scrollTop + 100
+
+        // 调用动画函数 元素 对象 属性
+        animate(img1, {
+          // marginTop: scrollTop
+          top: scrollTop
+        })
+
+        animate(img2, {
+          // marginTop: scrollTop
+          top: scrollTop
+        })
+      })
+
+      function scroll() {
+        return {
+          scrollTop: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0,
+          scrollLeft: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0
+        }
+      }
+    })
+
+    function animate(demo, obj, fn) {
+      if (demo.timeId) {
+        clearInterval(demo.timeId)
+      }
+      demo.timeId = setInterval(function () {
+        var flag = true
+        for (var key in obj) { // 循环遍历对象，获取对象属性名及目标值
+          if (key === 'opacity') {
+            //由于透明度是小数 所以要*100
+            //获取当前对象透明度 去字母取整
+            var leader = parseInt(getStyle(demo, key) * 100) || 0
+            var step = (obj[key] * 100 - leader) / 10
+            //判断步长正负 正数向上取整 负数向下取整
+            step = step > 0 ? Math.ceil(step) : Math.floor(step)
+            //当前值+步长,要移动的位置
+            leader = leader + step
+            demo.style[key] = leader / 100 // 最终赋值的时候，要再除以100
+          } else if (key === 'zIndex') {
+            var leader = obj[key]
+            demo.style[key] = leader
+          } else {
+            //获取当前属性其他值
+            var leader = parseInt(getStyle(demo, key)) // 转换成数字
+            //计算缓动步长 目标值-当前值 /10
+            var step = (obj[key] - leader) / 10
+            //判断步长正负 正数向上取整 负数向下取整
+            step = step > 0 ? Math.ceil(step) : Math.floor(step)
+            // console.log(step)
+            // 当前值+步长
+            leader = leader + step
+            // 给当前元素赋值
+            demo.style[key] = leader + 'px'
+          }
+
+          //如果目标值不等于现在位置 flag为false 下面判断不成立，不清除定时器
+          if (obj[key] !== leader) {
+            flag = false
+          }
+        }
+
+        // 如果没有执行上面判断 则flag一直为true 进入内部清除定时器
+        if (flag) {
+          // 就证明所有的属性都到达了目标值，此时可以清除定时器
+          clearInterval(demo.timeId)
+          // 清除定时器之后，如果有回调函数，则执行回调函数中的代码
+          if (typeof fn === 'function') {
+            fn()
+          }
+        }
+      }, 20);
+    }
+
+
+    // attr是attribute 属性的意思
+    function getStyle(ele, attr) {
+      // 能力检测 就是要看当前的浏览器是否支持此标签对象的属性或是方法
+      if (ele && ele.currentStyle) {
+        return ele.currentStyle[attr]
+      } else {
+        return window.getComputedStyle(ele, null)[attr]
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+
+
+
+</head>
+
+
+
+<body>
+  <img id="img1" src="./images/zyxiaoguangg (1).gif" alt="">
+  <img id="img2" src="./images/zyxiaoguangg (2).gif" alt="">
+</body>
+
+</html>

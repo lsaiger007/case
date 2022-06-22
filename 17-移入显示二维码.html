@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>06-移入显示二维码</title>
+  <style>
+    .nodeSmall1 {
+      width: 50px;
+      height: 50px;
+      background: url(images/bgs.png) no-repeat -159px -51px;
+      position: fixed;
+      right: 10px;
+      top: 40%;
+    }
+
+    .erweima {
+      position: absolute;
+      top: 0;
+      left: -150px;
+    }
+
+    .nodeSmall1 a {
+      display: block;
+      width: 50px;
+      height: 50px;
+      /*background-color: red;*/
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .show {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="nodeSmall1" id="node_small1">
+    <a href="#"></a>
+    <div class="erweima hide" id="er1">
+      <img src="./images/456.png" alt="">
+    </div>
+
+
+
+
+
+
+  </div>
+
+
+
+
+  <script>
+    // 1. 获取页面中的标签对象
+    var img = document.getElementById('er1')
+
+    var link = document.querySelector('#node_small1 > a')
+
+
+    // 2. 给事件源注册事件
+
+    //移入鼠标时 删除隐藏类 添加显示类
+    link.onmouseover = function () {
+      img.classList.remove('hide')
+      img.classList.add('show')
+    }
+
+    //移出鼠标时 添加隐藏类 删除显示类
+    link.onmouseout = function () {
+      img.classList.remove('show')
+      img.classList.add('hide')
+    }
+
+  </script>
+
+</body>
+
+</html>

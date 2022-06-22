@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>01-tab栏切换[面向对象 写法抽离]</title>
+  <style>
+    .box {
+      width: 300px;
+      height: 350px;
+      border: 1px solid #000;
+      margin: 100px auto;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    .box input {
+      width: 80px;
+      cursor: pointer;
+    }
+
+    .box input.current {
+      background-color: orangered;
+      color: #fff;
+    }
+
+    .box div {
+      width: 280px;
+      height: 300px;
+      border: 1px solid #000;
+      margin-top: 10px;
+      margin-left: 10px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="box">
+    <input type="button" value="桔子" class="current">
+    <input type="button" value="香蕉">
+    <input type="button" value="苹果">
+    <div style="display: block;">桔子</div>
+    <div>香蕉</div>
+    <div>苹果</div>
+  </div>
+
+  <div class="box demo">
+    <input type="button" value="桔子" class="current">
+    <input type="button" value="香蕉">
+    <input type="button" value="苹果">
+    <div style="display: block;">桔子</div>
+    <div>香蕉</div>
+    <div>苹果</div>
+  </div>
+
+  <script src="./js/tab.js"></script>
+
+  <script>
+
+    var tab1 = new Tab('.box')
+
+    var tab2 = new Tab('.demo')
+
+
+  </script>
+
+
+
+</body>
+
+</html>

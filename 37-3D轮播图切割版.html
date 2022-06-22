@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keyword" content="关键词">
+  <meta name="description" content="关键描述">
+  <title>02-3D轮播图切割版</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+
+
+    .box {
+      width: 560px;
+      height: 380px;
+      margin: 100px auto;
+      border: 1px solid black;
+      position: relative;
+    }
+
+    .box ul {
+      list-style: none;
+      position: relative;
+      width: 20%;
+      height: 380px;
+      /* perspective: 1000px; */
+      transform-style: preserve-3d;
+      float: left;
+    }
+
+    .box ul li {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .box ul li:first-child {
+      background: url(./images/3Dlunbotu1.jpg) no-repeat;
+      transform: translateZ(190px);
+    }
+
+    .box ul li:nth-child(2) {
+      background: url(./images/3Dlunbotu2.jpg) no-repeat;
+      transform: rotateX(90deg) translateZ(190px);
+    }
+
+    .box ul li:nth-child(3) {
+      background: url(./images/3Dlunbotu3.jpg) no-repeat;
+      transform: rotateX(180deg) translateZ(190px);
+    }
+
+    .box ul li:nth-child(4) {
+      background: url(./images/3Dlunbotu4.jpg) no-repeat;
+      transform: rotateX(270deg) translateZ(190px);
+    }
+
+    /* .box ul:nth-child(2) li {
+      background-position: -112px 0;
+    }
+
+    .box ul:nth-child(3) li {
+      background-position: -224px 0;
+    }
+
+    .box ul:nth-child(4) li {
+      background-position: -336px 0;
+    }
+
+    .box ul:nth-child(5) li {
+      background-position: -448px 0;
+    } */
+
+    .arr>span {
+      height: 60px;
+      width: 60px;
+      position: absolute;
+      line-height: 60px;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: peru;
+      color: aliceblue;
+      cursor: pointer;
+    }
+
+    .arr .arr-left {
+      left: -60px;
+    }
+
+    .arr .arr-right {
+      right: -60px;
+    }
+  </style>
+  <script>
+    window.onload = function () {
+      var ul = document.querySelectorAll('.box ul')
+      var arrL = document.querySelector('.arr .arr-left')
+      var arrR = document.querySelector('.arr .arr-right')
+      //节流阀
+      var flag = true
+      // index记录每次点击次数
+      var index = 0
+      // 注意；每个ul表示一个上下左右完整的方块 所以要单独设置每个li位置
+
+
+      // 3. 使用JS方式给每个ul里面的li设置位置
+      for (var i = 0; i < ul.length; i++) {
+        // 每次循环拿到第[i]ul里的li标签
+        var lis = ul[i].children
+        for (var j = 0; j < lis.length; j++) {
+          // [i]ul里面的[j]个li标签 每次他的位置移动
+          lis[j].style.backgroundPosition = -112 * i + 'px 0'
+        }
+      }
+
+      arrR.addEventListener('click', function () {
+        // 2.1 每次单击按钮的时候，要让ul沿着X轴旋转90度
+
+        if (flag) {
+          // 如果flag=true才能进来  index开始记录 否则每次点击无效
+          flag = false
+          index--
+        }
+        //3. 循环每个ul 
+        for (var i = 0; i < ul.length; i++) {
+          //3.1 模板字符串 里面可以直接写表达式
+          //3.1 每个ul添加过渡等待时间
+          ul[i].style.transition = `all 1s ${0.1 * i}s`
+          //3.2 过渡后旋转角度 乘以index记录点击次数
+          ul[i].style.transform = 'rotateX(' + index * 90 + 'deg)'
+        }
+      })
+
+      arrL.addEventListener('click', function () {
+        // 2.1 每次单击按钮的时候，要让ul沿着X轴旋转90度
+
+        if (flag) {
+          flag = false
+          index++
+        }
+        //3. 循环每个ul 
+        for (var i = 0; i < ul.length; i++) {
+          //3.1 模板字符串 里面可以直接写表达式
+          //3.1 每个ul添加过渡等待时间
+          ul[i].style.transition = `all 1s ${0.1 * i}s`
+          //3.2 过渡后旋转角度 乘以index记录点击次数
+          ul[i].style.transform = 'rotateX(' + index * 90 + 'deg)'
+        }
+      })
+
+      //4. 添加节流阀 最后一个ul过渡结束时 让flag = true
+      ul[ul.length - 1].addEventListener('transitionend', function () {
+        flag = true
+      })
+
+      
+
+
+    }
+  </script>
+</head>
+
+<body>
+  <div class="box">
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <div class="arr">
+      <span class="arr-left">上一个</span>
+      <span class="arr-right">下一个</span>
+    </div>
+  </div>
+</body>
+
+</html>
